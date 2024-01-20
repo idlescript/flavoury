@@ -28,7 +28,7 @@ router.get('/delete-recipe', async function(req, res, next) {
   const deleteAllData = await new Promise ((resolve, reject) => {
     const dbQuery = "DELETE FROM app_user;";
 
-    db.run(dbQuery, function (err) {
+    global.db.run(dbQuery, function (err) {
       if (err) {
         reject("Error deleting data: ", err);
       } else {
@@ -61,7 +61,7 @@ router.get('/save-recipe', async function(req, res, next) {
   const createNewUserData = await new Promise((resolve, reject) => {
     const dbQuery = "INSERT INTO app_user ('fullname', 'email', 'password', 'signup_datetime', 'last_login', 'profile_picture') VALUES( ?, ?, ?, ?, ?, ?);";
 
-    db.run(dbQuery, userData, function (err) {
+    global.db.run(dbQuery, userData, function (err) {
       if (err) {
         reject('Fail to save user data.');
       } else {
