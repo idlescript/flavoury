@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flavoury</title>
+    <link rel='stylesheet' href='/stylesheets/cookbook.css' />
+  </head>
+  <body>
+    <div class=navbar>
+        <div class=mainNav>
+            <p>Searchbar</p>
+            <p>Settings</p>
+        </div>
+        <div class="secondaryNav">
+            <p>New Group</p>
+            <P>New Recipe</P>
+            <p>List of recipes & groups (for desktop version)</p>
+        </div>
+    </div>
+    <div class=cookbook>
+        <% cookBookData.forEach(cookbookItem => { %>
+            <div class=category>
+                <p><%= cookbookItem.folder_name %></p>
+                <% recipeData.forEach(recipeItem => { %>
+                    <a href="">
+                        <div class=card>
+                            <div class=cardName>
+                                <p><%= recipeItem.recipe_title %></p>
+                            </div>
+                            <div class=cardPicture>
+                                <!--Need to figure out how to add photos-->
+                                <p><%= recipeItem.photo %></p>
+                            </div>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+        <% }); %>
+    </div>
+  </body>
+</html>

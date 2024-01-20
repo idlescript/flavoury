@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flavoury</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class=navbar>
+        <div class=mainNav>
+            <p>Searchbar</p>
+            <p>Settings</p>
+        </div>
+        <div class="secondaryNav">
+            <p>New Group</p>
+            <P>New Recipe</P>
+            <p>List of recipes & groups (for desktop version)</p>
+        </div>
+    </div>
+    <div class="options">
+        <p>Go Back</p>
+        <p>Save Recipe</p>
+    </div>
+    <div class=recipe>
+        <form method="post" action="/pageRoutes/personalCookbook">
+            <% recipeData.forEach(recipeItem => { %>
+                    <p>Recipe Title:</p>
+                    <input id="recipe_title" type="text" name="recipe_title" value="<%= recipeItem.recipe_title %>" />
+                    <p>Prep Time:</p>
+                    <input id="prep_time" type="text" name="prep_time" value="<%= recipeItem.prep_time %>" />
+                    <p>Cook Time:</p>
+                    <input id="cook_time" type="text" name="cook_time" value="<%= recipeItem.cook_time %>" />
+                    <p>Cook Time:</p>
+                    <input id="cook_time" type="text" name="cook_time" value="<%= recipeItem.cook_time %>" />
+                    <p>Servings</p>
+                    <input id="servings_amount" type="text" name="servings_amount" value="<%= recipeItem.servings_amount %>" />
+            <% }); %>
+            <p>Ingredients:</p>
+            <% ingredientData.forEach(ingredient => { %>
+                    <input id="ingredient_name" type="text" name="ingredient_name" value="<%= ingredient.ingredient_name %>" />
+            <% }); %>
+            <div>
+                <p>Add Ingredient</p>
+            </div>
+            <p>Instructions:</p>
+            <% instructionData.forEach(instruction => { %>
+                    <input id="instruction_text" type="text" name="instruction_text" value="<%= instruction.instruction_text %>" />
+            <% }); %>
+            <div>
+                <p>Add Instruction</p>
+            </div>
+        </form>
+    </div>
+  </body>
+</html>
