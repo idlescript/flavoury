@@ -4,27 +4,113 @@
     <style>body{margin-left:25px;}</style>
   </head>
   <body>
-    <h1>Test Page</h1>
+    <strong>Test Linking Page</strong><br><br>
+    <a href="/personal-cookbook">To personal cookbook</a><br>
+    <a href="/personal-recipe">To personal recipe</a><br>
+    <a href="/public-cookbook">To public cookbook</a><br>
+    <a href="/public-recipe">To public recipe</a><br>
+    <a href="/edit-recipe">To edit recipe</a><br>
+    <a href="/settings">To settings</a><br>
 
-    <a href="/recipe/save-recipe">Insert random data to database</a>
-    <br><br>
-    <a href="/recipe/delete-recipe">Delete all data in database</a>
+    <br><hr>
+    <h3>Test insert data and delete data</h3>
+    <a href="/insert-dummy-data/1">Insert random user data, folder data, and recipe data to DB</a><br><br>
+    <a href="/delete-dummy-data">Delete all data</a><br><br>
 
-    <br><br><br>--- User data from database: ---<br><br>
-    <% if (!loadUserData || loadUserData.length < 1) { %>
+    <br><strong>------ Test insert user data using POST method ------</strong><br>
+    <form action="user/save-user" method="post">
+      <label for="fullname">Full Name:</label>
+      <input type="text" id="fullname" name="fullname" required>
+      <br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+
+
+
+    <br><br><br><strong>------ User data: ------</strong><br><br>
+    <% if (!userData || userData.length < 1) { %>
       No data
     <% } %>
 
-    <% if (Array.isArray(loadUserData)) { %>
-      <% for (let data of loadUserData) { %>
+    <% if (Array.isArray(userData)) { %>
+      <% for (let data of userData) { %>
+        user id: <%= data.id %><br>
         <%= data.fullname %><br>
         <%= data.email %><br>
         <%= data.password %><br>
+        signup_datetime: <%= data.signup_datetime %><br>
+        last_login: <%= data.last_login %><br>
+        <%= data.profile_picture %><br>
+        <br>
       <% } %>
     <% } else { %>
-      <%= loadUserData.fullname %><br>
-      <%= loadUserData.email %><br>
-      <%= loadUserData.password %><br>
+      user id: <%= userData.id %><br>
+      <%= userData.fullname %><br>
+      <%= userData.email %><br>
+      <%= userData.password %><br>
+      signup_datetime: <%= userData.signup_datetime %><br>
+      last_login: <%= userData.last_login %><br>
+      <%= userData.profile_picture %><br>
+      <br>
     <% } %>
+
+
+    <br><br><strong>------ Recipe folder data: ------</strong><br><br>
+    <% if (!recipeFolder || recipeFolder.length < 1) { %>
+      No data
+    <% } %>
+
+    <% if (Array.isArray(recipeFolder)) { %>
+      <% for (let data of recipeFolder) { %>
+        recipe folder id: <%= data.id %><br>
+        user id: <%= data.app_user_id %><br>
+        <%= data.folder_name %><br>
+        <br>
+      <% } %>
+    <% } else { %>
+      recipe folder id: <%= data.id %><br>
+      user id: <%= recipeFolder.app_user_id %><br>
+      <%= recipeFolder.folder_name %><br>
+      <br>
+    <% } %>
+
+
+    <br><br><strong>------ Recipe data: ------</strong><br><br>
+    <% if (!recipeData || recipeData.length < 1) { %>
+      No data
+    <% } %>
+
+    <% if (Array.isArray(recipeData)) { %>
+      <% for (let data of recipeData) { %>
+        recipe id: <%= data.id %><br>
+        user id: <%= data.app_user_id %><br>
+        recipe folder id: <%= data.recipe_folder_id %><br>
+        <%= data.recipe_title %><br>
+        <%= data.share_to_public %><br>
+        <%= data.date_created %><br>
+        Servings: <%= data.servings_amount %><br>
+        prep time: <%= data.prep_time %> mins<br>
+        cook time: <%= data.cook_time %> mins<br>
+        <br>
+      <% } %>
+    <% } else { %>
+      recipe id: <%= data.id %><br>
+      user id: <%= recipeData.app_user_id %><br>
+      recipe folder id: <%= recipeData.recipe_folder_id %><br>
+      <%= recipeData.recipe_title %><br>
+      <%= recipeData.share_to_public %><br>
+      <%= recipeData.date_created %><br>
+      Servings: <%= recipeData.servings_amount %><br>
+      prep time: <%= recipeData.prep_time %> mins<br>
+      cook time: <%= recipeData.cook_time %> mins<br>
+      <br>
+    <% } %>
+
   </body>
 </html>
