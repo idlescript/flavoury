@@ -14,23 +14,62 @@
 
     <br><hr>
     <h3>Test insert data and delete data</h3>
-    <a href="/insert-dummy-data/1">Insert random user data, folder data, and recipe data to DB</a><br><br>
-    <a href="/delete-dummy-data">Delete all data</a><br><br>
+    <a href="/insert-dummy-data">Insert random user data, folder data, and recipe data to DB</a><br><br>
+    <a href="/delete-all-data">Delete all data</a><br><br>
 
-    <br><strong>------ Test insert user data using POST method ------</strong><br>
-    <form action="user/save-user" method="post">
-      <label for="fullname">Full Name:</label>
-      <input type="text" id="fullname" name="fullname" required>
+    <br><strong>------ Insert user data (refresh page manually) ------</strong><br>
+    <form action="/user/save-user" method="post">
+      <label>Full Name:</label>
+      <input type="text" id="insertuser1" name="fullname" required>
       <br>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
+      <label>Email:</label>
+      <input type="email" id="insertuser2" name="email" required>
       <br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+      <label>Password:</label>
+      <input type="password" id="insertuser3" name="password" required>
       <br>
       <input type="submit" value="Submit">
     </form>
 
+    <br><strong>------ Edit user data (refresh page manually)  ------</strong><br>
+    <form action="/user/edit-user" method="post">
+      <label>User id:</label>
+      <input type="text" id="edituser1" name="userId" required>
+      <br>
+      <label>Full Name:</label>
+      <input type="text" id="edituser2" name="fullname" required>
+      <br>
+      <label>Email:</label>
+      <input type="email" id="edituser3" name="email" required>
+      <br>
+      <label>Password:</label>
+      <input type="password" id="edituser4" name="password" required>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+
+    <br><strong>------ Edit recipe (refresh page manually)  ------</strong><br>
+    <form action="/recipe/edit-recipe" method="post">
+      <label>Recipe id:</label>
+      <input type="text" id="editrecipe1" name="recipeId" required>
+      <br>
+      <label>Recipe Title:</label>
+      <input type="text" id="editrecipe2" name="title" required>
+      <br>
+      <label>Share to public:</label>
+      <input type="text" id="editrecipe3" name="sharing" required>
+      <br>
+      <label>servings amount:</label>
+      <input type="text" id="editrecipe4" name="servings" required>
+      <br>
+      <label>prep time:</label>
+      <input type="text" id="editrecipe5" name="prepTime" required>
+      <br>
+      <label>cook time:</label>
+      <input type="text" id="editrecipe6" name="cookTime" required>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
 
 
     <br><br><br><strong>------ User data: ------</strong><br><br>
@@ -59,6 +98,7 @@
       <%= userData.profile_picture %><br>
       <br>
     <% } %>
+
 
 
     <br><br><strong>------ Recipe folder data: ------</strong><br><br>

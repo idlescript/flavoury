@@ -1,149 +1,147 @@
+const userController = require('./userController')
 
 function randomDigit(digit_amount) {  // for testing purpose only
   return Math.floor(10 ** (digit_amount-1) + Math.random() * (10 ** digit_amount-1));
 }
 
-//insert user data, recipe_folder data, recipe data for testing
-const insertDummyData = (req, res, next) => {
 
-  const fullname = "fullname"+randomDigit(4);
-  const email = "email"+randomDigit(4);
-  const password = "password"+randomDigit(4);
-  const profile_picture = "profilepic"+randomDigit(4);
-
-  const update_values = [fullname, email, password, profile_picture];
-  const dbQuery = "INSERT INTO app_user ('fullname', 'email', 'password', 'profile_picture') VALUES( ?, ?, ?, ?);";
-
-  global.db.run(dbQuery, update_values, function (err) {
-    if (err) {
-      console.error(`Error saving data: ${err}`);
-    } else {
-      const app_user_id = this.lastID;
-      const folder_name = "folder name"+randomDigit(4);
-      const update_values2 = [app_user_id, folder_name];
-      const dbQuery2 = "INSERT INTO recipe_folder ('app_user_id', 'folder_name') VALUES( ?, ? );";
-    
-      global.db.run(dbQuery2, update_values2, function (err2) {
-        if (err) {
-          console.error(`Error saving data: ${err2}`);
-        } else {
-          const folder_id = this.lastID;
-          const recipe_title = "recipe title "+randomDigit(4);
-          const share_to_public = 0;
-          const servings_amount = randomDigit(1);
-          const prep_time = randomDigit(3);
-          const cook_time = randomDigit(3);
-    
-          const update_values3 = [app_user_id, folder_id, recipe_title, share_to_public, servings_amount, prep_time, cook_time];
-          const dbQuery3 = "INSERT INTO recipe ('app_user_id', 'recipe_folder_id', 'recipe_title', 'share_to_public', 'servings_amount', 'prep_time', 'cook_time')\
-                            VALUES( ?, ?, ?, ?, ?, ?, ? );";
-        
-          global.db.run(dbQuery3, update_values3, function (err3) {
-            if (err) {
-              console.error(`Error saving data: ${err3}`);
-            } else {
-              res.redirect('/test');
-            }
-          });
-        }
-      });
-    }
-  });
-};
-
-const deleteDummyData = (req, res, next) => {
-
-  const dbQuery = "DELETE FROM recipe;";
-  global.db.run(dbQuery, function (err) {
-    if (err) {
-      console.error(`Error deleting data: ${err}`);
-    } else {
-
-      const dbQuery2 = "DELETE FROM recipe_folder;";
-      global.db.run(dbQuery2, function (err2) {
-        if (err2) {
-          console.error(`Error deleting data: ${err2}`);
-        } else {
-
-          const dbQuery3 = "DELETE FROM app_user;";
-          global.db.run(dbQuery3, function (err3) {
-            if (err3) {
-              console.error(`Error deleting data: ${err3}`);
-            } else {
-              res.redirect('/test');
-            }
-          });
-        }
-      });
-    }
-  });
-};
-
-
-
-const createRecipeFolder = (req, res, next) => {
-  const app_user_id = req.params.id;
-  const folder_name = "folder"+randomDigit(4);
+const createRecipeFolder = async (req, res, next) => {
+  const app_user_id = (req && req.body && req.body.userId) ? req.body.userId : req.body.id;
+  const folder_name = (req && req.body.folderName) ? req.body.folderName : "folder"+randomDigit(4);
   const update_values = [app_user_id, folder_name];
   const dbQuery = "INSERT INTO recipe_folder ('app_user_id', 'folder_name') VALUES( ?, ? );";
 
-  global.db.run(dbQuery, update_values, function (err) {
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
     if (err) {
-      console.error(`Error saving data: ${err}`);
+      reject(`Error saving data: ${err}`);
     } else {
-      res.redirect('/test');
+      resolve(this.lastID);
     }
-  });
+  }));
 };
 
-const deleteRecipeFolder = (req, res, next) => {
+const getAllRecipeFolder = async(req, res, next) => { //for testing usage only
+  const dbQuery = "SELECT * FROM recipe_folder;"
+  return new Promise ((resolve, reject) => global.db.all(dbQuery, function (err, result) {
+    if (err) {
+      reject(`Error getting data: ${err}`);
+    } else {
+      resolve(result);
+    }
+  }));
+}
+
+const getRecipeFolder = async(req, res, next) => {
+  const app_user_id = req.params.userId;
+  const update_values = [app_user_id];
+  const dbQuery = "SELECT * FROM recipe_folder WHERE app_user_id=?;"
+  return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
+    if (err) {
+      reject(`Error getting data: ${err}`);
+    } else {
+      resolve(result);
+    }
+  }));
+}
+
+const deleteRecipeFolder = async (req, res, next) => {
   const dbQuery = "DELETE FROM recipe_folder;";
 
-  global.db.run(dbQuery, function (err) {
+  await new Promise ((resolve, reject) => global.db.run(dbQuery, function (err) {
     if (err) {
-      console.error(`Error deleting data: ${err}`);
+      reject(`Error deleting data: ${err}`);
     } else {
-      res.redirect('/test');
+      resolve("Data deleted!");
     }
-  });
+  }));
 };
 
-const saveRecipe = (req, res, next) => {
-  const recipe_title = "recipe title "+randomDigit(4);
-  const share_to_public = 0;
-  const servings_amount = randomDigit(1);
-  const prep_time = randomDigit(3);
-  const cook_time = randomDigit(3);
 
-  const update_values = [recipe_title, share_to_public, servings_amount, prep_time, cook_time];
-  const dbQuery = "INSERT INTO recipe ('recipe_title', 'share_to_public', 'servings_amount', 'prep_time', 'cook_time') VALUES( ?, ?, ?, ?, ? );";
+const saveRecipe = async (req, res, next) => {
+  const app_user_id = (req && req.body && req.body.userId) ? req.body.userId : 999;
+  const recipe_folder_id = (req && req.body && req.body.folderId) ? req.body.folderId : 999;
+  const recipe_title = (req && req.body.title) ? req.body.title : "recipe title "+randomDigit(4);
+  const share_to_public = (req && req.body.sharing) ? req.body.sharing : 0;
+  const servings_amount = (req && req.body.servings) ? req.body.servings : randomDigit(1);
+  const prep_time = (req && req.body.prepTime) ? req.body.prepTime : randomDigit(3);
+  const cook_time = (req && req.body.cookTime) ? req.body.cookTime : randomDigit(3);
 
-  global.db.run(dbQuery, update_values, function (err) {
+  const update_values = [app_user_id, recipe_folder_id, recipe_title, share_to_public, servings_amount, prep_time, cook_time];
+  const dbQuery = "INSERT INTO recipe ('app_user_id', 'recipe_folder_id', 'recipe_title', 'share_to_public', 'servings_amount', 'prep_time', 'cook_time')\
+                    VALUES( ?, ?, ?, ?, ?, ?, ? );";
+
+  await new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
     if (err) {
-      console.error(`Error saving data: ${err}`);
+      reject(`Error saving data: ${err}`);
     } else {
-      res.redirect('/test');
+      resolve("Data saved!");
     }
-  });
+  }));
 };
 
-const deleteRecipe = (req, res, next) => {
+const getRecipe = async(req, res, next) => {
+  const dbQuery = "SELECT * FROM recipe;"
+  return new Promise ((resolve, reject) => global.db.all(dbQuery, function (err, result) {
+    if (err) {
+      reject(`Error getting data: ${err}`);
+    } else {
+      resolve(result);
+    }
+  }));
+}
+
+const editRecipe = async(req, res, next) => {
+  const recipe_id = req.body.recipeId;
+  const recipe_title = req.body.title;
+  const share_to_public = req.body.sharing;
+  const servings_amount = req.body.servings;
+  const prep_time = req.body.prepTime;
+  const cook_time = req.body.cookTime;
+  const update_values = [recipe_title, share_to_public, servings_amount, prep_time, cook_time, recipe_id];
+
+  const dbQuery = "UPDATE recipe SET recipe_title=?, share_to_public=?, servings_amount=?,prep_time=? ,cook_time=? WHERE id=?;"
+  return new Promise ((resolve, reject) => global.db.get(dbQuery, update_values, function (err, result) {
+    if (err) {
+      reject(`Error updating data: ${err}`);
+    } else {
+      resolve(result);
+    }
+  }));
+}
+
+const deleteAllRecipe = async (req, res, next) => { //testing usage only
   const dbQuery = "DELETE FROM recipe;";
-
-  global.db.run(dbQuery, function (err) {
+  await new Promise ((resolve, reject) => global.db.run(dbQuery, function (err) {
     if (err) {
-      console.error(`Error deleting data: ${err}`);
+      reject(`Error deleting data: ${err}`);
     } else {
-      res.redirect('/test');
+      resolve("Data deleted!");
     }
-  });
+  }));
+};
+
+const deleteRecipe = async (req, res, next) => {
+  const recipe_id = req.body.recipeId;
+  const update_values = [recipe_id];
+  const dbQuery = "DELETE FROM recipe WHERE id=?;";
+
+  await new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
+    if (err) {
+      reject(`Error deleting data: ${err}`);
+    } else {
+      resolve("Data deleted!");
+    }
+  }));
 };
 
 module.exports = {
-  insertDummyData,
-  deleteDummyData,
   createRecipeFolder,
+  getAllRecipeFolder,
+  getRecipeFolder,
   deleteRecipeFolder,
   saveRecipe,
+  getRecipe,
+  editRecipe,
+  deleteAllRecipe,
   deleteRecipe  
 }
