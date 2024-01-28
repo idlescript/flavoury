@@ -18,6 +18,10 @@ const insertDummyData = async (req, res, next) => {
     }
 
     const test3 = await recipeController.saveRecipe(req, res, next);
+    if (test3) {
+      const recipe_id = test3;
+      req.body = { ...req.body, recipeId: recipe_id };
+    }
 
     res.redirect('/test');
   }
@@ -29,10 +33,8 @@ const insertDummyData = async (req, res, next) => {
 const deleteAllData = async (req, res, next) => {  // Testing usage only
   try {
     const delete1 = await recipeController.deleteAllRecipe(req, res, next);
-    const delete2 = await recipeController.deleteRecipeFolder(req, res, next);
-    const delete3 = await userController.deleteUser(req, res, next);
-
-    console.log(`delete1+delete2+delete3: ${delete1}+${delete2}+${delete3}`)
+    const delete2 = await recipeController.deleteAllRecipeFolder(req, res, next);
+    const delete3 = await userController.deleteAllUser(req, res, next);
 
     res.redirect('/test');
   }
@@ -47,9 +49,9 @@ const loadTestPage = async (req, res, next) => {
     console.log("loadTestPage : ");
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
-    res.render('test-page', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    res.render('test-page', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData});
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -61,7 +63,7 @@ const loadHomepage = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('index', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -74,7 +76,7 @@ const loadPersonalCookbook = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('personalCookbook', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -87,7 +89,7 @@ const loadPersonalRecipe = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('personalRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -100,7 +102,7 @@ const loadPublicCookbook = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('publicCookbook', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -113,7 +115,7 @@ const loadPublicRecipe = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('publicRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -126,7 +128,7 @@ const loadEditRecipe = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('editRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -139,7 +141,7 @@ const loadSettings = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('settings', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }

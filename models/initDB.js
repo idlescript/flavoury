@@ -31,11 +31,14 @@ async function initializeDatabase() {
       app_user_id INTEGER,
       recipe_folder_id INTEGER,
       recipe_title TEXT,
-      share_to_public BOOLEAN NOT NULL CHECK (share_to_public IN (0, 1)),
+      share_to_public TEXT,
       date_created TEXT DEFAULT CURRENT_TIMESTAMP,
       servings_amount INTEGER,
       prep_time INTEGER,
       cook_time INTEGER,
+      ingredient TEXT,
+      instruction TEXT,
+      recipe_note TEXT,
       FOREIGN KEY (app_user_id) REFERENCES app_user (id),
       FOREIGN KEY (recipe_folder_id) REFERENCES recipe_folder (id) ON DELETE RESTRICT
     );
@@ -45,28 +48,6 @@ async function initializeDatabase() {
       recipe_id INTEGER,
       photo TEXT,
       caption TEXT,
-      FOREIGN KEY (recipe_id) REFERENCES recipe (id) ON DELETE CASCADE
-    );
-
-    CREATE TABLE IF NOT EXISTS notes (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      recipe_id INTEGER,
-      content TEXT,
-      FOREIGN KEY (recipe_id) REFERENCES recipe (id) ON DELETE CASCADE
-    );
-
-    CREATE TABLE IF NOT EXISTS ingredient (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      recipe_id INTEGER,
-      ingredient_name TEXT,
-      FOREIGN KEY (recipe_id) REFERENCES recipe (id) ON DELETE CASCADE
-    );
-
-    CREATE TABLE IF NOT EXISTS instruction (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      recipe_id INTEGER,
-      step_number INTEGER,
-      instruction_text TEXT,
       FOREIGN KEY (recipe_id) REFERENCES recipe (id) ON DELETE CASCADE
     );
   `);

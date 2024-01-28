@@ -14,10 +14,10 @@ router.get('/', pageController.loadHomepage);
 
 //route to other pages
 router.get('/personal-cookbook', pageController.loadPersonalCookbook);
-router.get('/personal-recipe', pageController.loadPersonalRecipe);
+router.get('/personal-recipe/:recipeId?', pageController.loadPersonalRecipe);
 router.get('/public-cookbook', pageController.loadPublicCookbook);
-router.get('/public-recipe', pageController.loadPublicRecipe);
-router.get('/edit-recipe', pageController.loadEditRecipe);
+router.get('/public-recipe/:recipeId?', pageController.loadPublicRecipe);
+router.get('/edit-recipe/:recipeId?', pageController.loadEditRecipe);
 router.get('/settings', pageController.loadSettings);
 
 
