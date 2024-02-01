@@ -1,0 +1,78 @@
+/* ------- navbar -------- */
+
+.navbar {
+    background-color: #4274b9;
+    color: #b0dee4;
+
+    float: left;
+    width: 16%;
+    height: 150vh;
+    padding: 2%;
+}
+
+/* -------- footer --------- */
+
+/* unsure about this at the moment
+
+.footer {
+    background-color: #4274b9;
+    color: #b0dee4;
+}
+
+*/
+
+/* --------- main content colors --------- */
+
+.optionsMenu {
+    background-color: #4274b9;
+    color: #b0dee4;
+}
+
+/* light mode */
+
+body {
+    background-color: #ffffff;
+    color: #070707
+}
+
+.leftcolumn {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+.rightcolumn {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+.card {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+
+/* dark mode */
+
+.body-dark {
+    background-color: #060709;
+    color: #ffffff;
+}
+
+.leftcolumn-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+.rightcolumn-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+.card-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+
+
+/* ------- screen size responsiveness --------- */
+
+
+
+
+
+

@@ -5,8 +5,8 @@
     <link rel='stylesheet' href='/stylesheets/cookbook.css' />
   </head>
   <body>
-    <div class=navbar>
-        <div class=mainNav>
+    <div class="navbar">
+        <div class="mainNav">
             <p>Searchbar</p>
             <p>Settings</p>
         </div>
@@ -18,15 +18,15 @@
     </div>
     <div class=cookbook>
         <% cookBookData.forEach(cookbookItem => { %>
-            <div class=category>
+            <div class="category">
                 <p><%= cookbookItem.folder_name %></p>
                 <% recipeData.forEach(recipeItem => { %>
                     <a href="">
-                        <div class=card>
-                            <div class=cardName>
+                        <div class="card">
+                            <div class="cardName">
                                 <p><%= recipeItem.recipe_title %></p>
                             </div>
-                            <div class=cardPicture>
+                            <div class="cardPicture">
                                 <!--Need to figure out how to add photos-->
                                 <p><%= recipeItem.photo %></p>
                             </div>
