@@ -1,0 +1,38 @@
+.recipe {
+    float: left;
+    width: 76%;
+    padding: 2%;
+}
+
+.optionsMenu {
+    float: right;
+    width: 26%;
+    height: 20vh;
+    padding: 2%;
+}
+
+.header {
+    float: left;
+    width: 64%;
+    height: 20vh;
+    padding: 2%;
+}
+
+.leftcolumn {
+    float: left;
+    width: 34%;
+    padding: 2%;
+    border-radius: 8%;
+}
+
+.rightcolumn {
+    float: right;
+    width: 56%;
+    padding: 2%;
+    border-radius: 6%;
+}
+
+h3 {
+    border-bottom-style: solid;
+    border-width: thin;
+}
