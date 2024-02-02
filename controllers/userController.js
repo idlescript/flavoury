@@ -73,11 +73,12 @@ const editUser = async(req, res, next) => {
   const update_values = [fullname, email, password, userId];
 
   const dbQuery = "UPDATE app_user SET fullname=?, email=?, password=? WHERE id=?;"
-  return new Promise ((resolve, reject) => global.db.get(dbQuery, update_values, function (err, result) {
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
     if (err) {
       reject(`Error updating data: ${err}`);
     } else {
-      resolve(result);
+      const rowsAffected = this.changes; // return number of rows changed
+      resolve(rowsAffected);
     }
   }));
 }

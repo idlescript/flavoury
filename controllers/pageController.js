@@ -89,7 +89,7 @@ const loadPersonalRecipe = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
+    const recipeData = await recipeController.getRecipe(req, res, next);
 
     res.render('personalRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -128,7 +128,7 @@ const loadEditRecipe = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
+    const recipeData = await recipeController.getRecipe(req, res, next);
 
     res.render('editRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }

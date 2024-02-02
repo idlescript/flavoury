@@ -70,10 +70,24 @@
       <input type="submit" value="Submit">
     </form>
 
+    <br><strong>------ Edit recipe folder (refresh page manually) ------</strong><br>
+    <form action="/recipe/edit-recipe-folder" method="post">
+      <label>user id:</label>
+      <input type="text" name="userId" required>
+      <br>
+      <label>recipe folder id:</label>
+      <input type="text" name="folderId" required>
+      <br>
+      <label>Folder name:</label>
+      <input type="text" name="folderName" required>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+
     <br><strong>------ Insert recipe (refresh page manually)  ------</strong><br>
     <form action="/recipe/save-recipe" method="post">
       <label>user id: (must exist in db)</label>
-      <input type="text" name="uesrId" required>
+      <input type="text" name="userId" required>
       <br>
       <label>folder id: (must exist in db)</label>
       <input type="text" name="folderId" required>
@@ -161,6 +175,18 @@
       <input type="submit" value="Submit">
     </form>
 
+    <br><strong>------ Search recipe (refresh page manually) ------</strong><br>
+    <form action="/recipe/search-recipe" method="post">
+      <select id="selectOption" name="searchType">
+        <option value="public">Public</option>
+        <option value="personal">Personal</option>
+      </select>
+      <label>Search for recipe</label>
+      <input type="text" name="searchQuery" required>
+      <br><br>
+      <input type="submit" value="Submit">
+    </form>
+
 
     <br><br><br><strong>------ User data: ------</strong><br><br>
     <% if (!userData || userData.length < 1) { %>
@@ -221,8 +247,8 @@
         recipe id: <%= data.id %><br>
         user id: <%= data.app_user_id %><br>
         recipe folder id: <%= data.recipe_folder_id %><br>
-        <%= data.recipe_title %><br>
-        <%= data.share_to_public %><br>
+        title: <%= data.recipe_title %><br>
+        sharing: <%= data.share_to_public %><br>
         <%= data.date_created %><br>
         Servings: <%= data.servings_amount %><br>
         prep time: <%= data.prep_time %> mins<br>

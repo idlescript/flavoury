@@ -12,5 +12,6 @@ router.post('/create-recipe-folder', recipeController.createRecipeFolder);
 router.post('/edit-recipe-folder', recipeController.editRecipeFolder);
 router.post('/delete-recipe-folder', recipeController.deleteRecipeFolder);
 router.post('/get-recipe-folder', recipeController.getRecipeFolder);
+router.post('/search-recipe', recipeController.searchRecipe);
 
 module.exports = router;

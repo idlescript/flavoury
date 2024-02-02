@@ -4,7 +4,6 @@ function randomDigit(digit_amount) {  // for testing purpose only
   return Math.floor(10 ** (digit_amount-1) + Math.random() * (10 ** digit_amount-1));
 }
 
-
 const createRecipeFolder = async (req, res, next) => {
   const app_user_id = (req && req.body.userId) ? req.body.userId : req.body.id;
   const folder_name = (req && req.body.folderName) ? req.body.folderName : "folder"+randomDigit(4);
@@ -18,7 +17,7 @@ const createRecipeFolder = async (req, res, next) => {
       resolve(this.lastID);
     }
   }));
-};
+}
 
 const getAllRecipeFolder = async(req, res, next) => { //for testing usage only
   const dbQuery = "SELECT * FROM recipe_folder;"
@@ -45,16 +44,18 @@ const getRecipeFolder = async(req, res, next) => {
 }
 
 const editRecipeFolder = async(req, res, next) => {
+  const app_user_id = req.body.userId;
   const recipe_folder_id = req.body.folderId;
   const folder_name = req.body.folderName;
-  const update_values = [folder_name, recipe_folder_id];
+  const update_values = [folder_name, recipe_folder_id, app_user_id];
 
-  const dbQuery = "UPDATE recipe_folder SET folder_name=? WHERE id=?;"
-  return new Promise ((resolve, reject) => global.db.get(dbQuery, update_values, function (err, result) {
+  const dbQuery = "UPDATE recipe_folder SET folder_name=? WHERE id=? AND app_user_id=?;"
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
     if (err) {
       reject(`Error updating data: ${err}`);
     } else {
-      resolve(result);
+      const rowsAffected = this.changes; // return number of rows changed
+      resolve(rowsAffected);
     }
   }));
 }
@@ -68,7 +69,7 @@ const deleteAllRecipeFolder = async (req, res, next) => { //for testing usage on
       resolve("Data deleted!");
     }
   }));
-};
+}
 
 const deleteRecipeFolder = async (req, res, next) => {
   const recipe_folder_id = req.params.folderId;
@@ -83,7 +84,7 @@ const deleteRecipeFolder = async (req, res, next) => {
       resolve("Data deleted!");
     }
   }));
-};
+}
 
 const saveRecipe = async (req, res, next) => {
   const app_user_id = req.body.userId;
@@ -110,19 +111,15 @@ const saveRecipe = async (req, res, next) => {
     }
   })
 
-    // remove empty string in the array
-    unsorted_instruction.forEach((item) => {
-      if (item.trim()) {
-        instruction.push(item);
-      }
-    })
+  // remove empty string in the array
+  unsorted_instruction.forEach((item) => {
+    if (item.trim()) {
+      instruction.push(item);
+    }
+  })
 
   ingredient = JSON.stringify(ingredient);
   instruction = JSON.stringify(instruction);
-
-  console.log(`insert recipe : `)
-  console.log(`ingredient : ${ingredient}`)
-  console.log(`instruction : ${instruction}`)
 
   const update_values = [app_user_id, recipe_folder_id, recipe_title, share_to_public, servings_amount, prep_time, cook_time, ingredient, instruction, recipe_note];
   const dbQueryRecipe = "INSERT INTO recipe \
@@ -139,7 +136,7 @@ const saveRecipe = async (req, res, next) => {
       resolve(this.lastID);
     }
   }));
-};
+}
 
 const getAllRecipe = async(req, res, next) => {  //for testing usage only
   const dbQuery = "SELECT * FROM recipe;"
@@ -147,21 +144,29 @@ const getAllRecipe = async(req, res, next) => {  //for testing usage only
     if (err) {
       reject(`Error getting data: ${err}`);
     } else {
+      result.forEach(arr => {
+        arr.ingredient = JSON.parse(arr.ingredient);
+        arr.instruction = JSON.parse(arr.instruction);
+      })
       resolve(result);
     }
   }));
 }
 
 const getRecipe = async(req, res, next) => {
-  const app_user_id = req.body.userId;
-  const recipe_folder_id = req.body.folderId;
-  const update_values = [recipe_folder_id, app_user_id];
+  const app_user_id = req.params.userId ? req.params.userId : 1;
+  const recipe_id = req.params.userId ? req.params.recipeId : 1;
+  const update_values = [app_user_id, recipe_id];
 
-  const dbQuery = "SELECT * FROM recipe WHERE recipe_folder_id=? AND app_user_id=?;"
+  const dbQuery = "SELECT * FROM recipe WHERE app_user_id=? AND id=?;"
   return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
     if (err) {
       reject(`Error getting data: ${err}`);
     } else {
+      result.forEach(arr => {
+        arr.ingredient = JSON.parse(arr.ingredient);
+        arr.instruction = JSON.parse(arr.instruction);
+      })
       resolve(result);
     }
   }));
@@ -201,12 +206,8 @@ const editRecipe = async(req, res, next) => {
 
   const update_values = [recipe_title, share_to_public, servings_amount, prep_time, cook_time, ingredient, instruction, recipe_note, recipe_id];
 
-  console.log(`edit recipe : `)
-  console.log(`ingredient : ${ingredient}`)
-  console.log(`instruction : ${instruction}`)
-
   const dbQuery = "UPDATE recipe SET recipe_title=?, share_to_public=?, servings_amount=?, prep_time=?, cook_time=?, ingredient=?, instruction=?, recipe_note=? WHERE id=?;"
-  return new Promise ((resolve, reject) => global.db.get(dbQuery, update_values, function (err, result) {
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
     if (err) {
       reject(`Error updating data: ${err}`);
     } else {
@@ -224,7 +225,7 @@ const deleteAllRecipe = async (req, res, next) => { //testing usage only
       resolve("Data deleted!");
     }
   }));
-};
+}
 
 const deleteRecipe = async (req, res, next) => {
   const recipe_id = req.body.recipeId;
@@ -238,10 +239,31 @@ const deleteRecipe = async (req, res, next) => {
       resolve("Data deleted!");
     }
   }));
+}
+
+const searchRecipe = async (req, res, next) => {
+  const searchType = req.body.searchType;
+  const searchQuery = `%${req.body.searchQuery}%`;
+
+  const update_values = [searchQuery];
+  let dbQuery;
+
+  if (searchType==="public") {
+    // search public recipe
+    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND NOT share_to_public='0'";
+  } else {
+    // search personal recipe
+    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND share_to_public='0'";
+  }
+
+  return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
+    if (err) {
+      reject(`Error querying data: ${err}`);
+    } else {
+      resolve(result);
+    }
+  }));
 };
-
-
-
 
 module.exports = {
   createRecipeFolder,
@@ -256,4 +278,5 @@ module.exports = {
   editRecipe,
   deleteAllRecipe,
   deleteRecipe,
+  searchRecipe
 }

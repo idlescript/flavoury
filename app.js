@@ -8,11 +8,11 @@ const logger = require('morgan');
 const initDB = require('./models/initDB');
 initDB.initializeDatabase();
 
-var pageRouter = require('./routes/pageRoutes');
-var userRouter = require('./routes/userRoutes');
-var recipeRouter = require('./routes/recipeRoutes');
+const pageRouter = require('./routes/pageRoutes');
+const userRouter = require('./routes/userRoutes');
+const recipeRouter = require('./routes/recipeRoutes');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
