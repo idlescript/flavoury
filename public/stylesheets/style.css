@@ -7,7 +7,16 @@
     float: left;
     width: 16%;
     height: 150vh;
-    padding: 2%;
+    padding:
+    2%;
+}
+
+/* -------- main content --------- */
+
+.main {
+    float: left;
+    width: 76%;
+    padding-left: 2%;
 }
 
 /* -------- footer --------- */

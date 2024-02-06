@@ -1,22 +1,43 @@
-.recipe {
-    float: left;
-    width: 76%;
-    padding: 2%;
-}
-
+/* ------ options menu ------- */
 .optionsMenu {
     float: right;
-    width: 26%;
-    height: 20vh;
-    padding: 2%;
+    min-width: 200px;
+    padding: 1%;
+    display: flex;
+    justify-content: space-evenly;
 }
+
+.optionsMenu p {
+    display:inline-block;
+}
+
+.buttons {
+    width: 44px;
+    padding-top: 3%;
+    padding-left: 2%;
+    padding-right: 2%;
+    float: left;
+    text-align: center;
+}
+
+button {
+    background-color: #4274b9;
+    color: #b0dee4;
+}
+
+/* ------ header -----  */
 
 .header {
     float: left;
     width: 64%;
-    height: 20vh;
     padding: 2%;
 }
+
+.header p {
+    display: inline-block;
+}
+
+/* --- main content --- */
 
 .leftcolumn {
     float: left;
@@ -35,4 +56,16 @@
 h3 {
     border-bottom-style: solid;
     border-width: thin;
+}
+
+ul li {
+    padding: 5px;
+}
+
+.container input:checked ~ .checkmark {
+    text-decoration-line: line-through;
+}
+
+ol li {
+    padding: 10px;
 }
