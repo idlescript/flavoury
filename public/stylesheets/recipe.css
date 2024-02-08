@@ -23,6 +23,8 @@
 button {
     background-color: #4274b9;
     color: #b0dee4;
+    border: none;
+    cursor: pointer;
 }
 
 /* ------ header -----  */
@@ -37,13 +39,60 @@ button {
     display: inline-block;
 }
 
-/* --- main content --- */
+/* --------- main content colors --------- */
+
+.optionsMenu {
+    background-color: #4274b9;
+    color: #b0dee4;
+}
+
+/* light mode */
+
+body {
+    background-color: #ffffff;
+    color: #070707
+}
+
+.leftcolumn {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+.rightcolumn {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+.card {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+
+/* dark mode */
+
+.body-dark {
+    background-color: #060709;
+    color: #ffffff;
+}
+
+.leftcolumn-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+.rightcolumn-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+.card-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+
+/* ----- main content layout ----- */
 
 .leftcolumn {
     float: left;
     width: 34%;
     padding: 2%;
-    border-radius: 8%;
+    border-radius: 6%;
 }
 
 .rightcolumn {
@@ -51,11 +100,6 @@ button {
     width: 56%;
     padding: 2%;
     border-radius: 6%;
-}
-
-h3 {
-    border-bottom-style: solid;
-    border-width: thin;
 }
 
 ul li {
@@ -69,3 +113,69 @@ ul li {
 ol li {
     padding: 10px;
 }
+
+/* ---- notes popup ---- */
+/* Credit: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal */
+
+/* The Modal (background) */
+.notesModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+  }
+  
+  /* Modal Content */
+  .notesContent {
+    position: relative;
+    background-color: #f5f3f4;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid #4274b9;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5),0 6px 20px 0 rgba(0,0,0,0.3);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    float: left;
+  }
+  
+  /* Add Animation */
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+  
+  /* The Close Button */
+  .close {
+    color: black;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 2px;
+  }
+  
+  .close:hover,
+  .close:focus {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+
+

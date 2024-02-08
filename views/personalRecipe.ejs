@@ -13,14 +13,20 @@
           <img src="/images/icons/search-black.png" style="width: 32px;" alt="Search">
           <p><input type="text" placeholder="Search Recipe... "></p>
         </div>
-        <img src="/images/icons/settings-blue.png" style="width: 32px;" alt="Settings">
-        <p>Settings</p>
+        <a href="#">
+          <img src="/images/icons/settings-blue.png" style="width: 32px;" alt="Settings">
+          <p>Settings</p>
+        </a>
       </div>
       <div class="secondaryNav">
-        <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Group">
-        <p>New Group</p>
-        <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Recipe">
-        <p>New Recipe</p>
+        <a href="#">
+          <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Group">
+          <p>New Group</p>
+        </a>
+        <a href="#">
+          <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Recipe">
+          <p>New Recipe</p>
+        </a>
         <p>List of recipes & groups (for desktop version)</p>
       </div>
     </div>
@@ -34,8 +40,10 @@
           </button>
         </div>
         <div class="buttons">
-          <img src="/images/icons/edit-blue.png" style="width: 40px;" alt="Edit">
-          <p>Edit</p>
+          <a href="#">
+            <img src="/images/icons/edit-blue.png" style="width: 40px;" alt="Edit">
+            <p>Edit</p>
+          </a>
         </div>
         <div class="buttons">
           <img src="/images/icons/delete-blue.png" style="width: 40px;" alt="Delete">
@@ -49,6 +57,61 @@
         <p>Total Time:</p>
         <p>Servings:</p>
       </div>
+      <!-- recipe notes popup -->
+      <div id="notesModal" class="modal">
+        <div class="notesContent">
+          <span class="close">&times;</span>
+          <h3>Notes</h3>
+          <ul>
+            <!--
+              Get rid of comments & placeholders
+                once css layout stuff is done
+                
+                <% if (Array.isArray(recipeData)) { %>
+                <% for (let data of recipeData) { %>
+                  <li><%= data.recipe_note %></li>
+                  <% } %>
+                <% } else { %>
+                  <%= recipeData.recipe_note %>
+                <% } %>
+             -->
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Some notes</li>
+            <li>Some notes</li>
+          </ul>
+        </div>
+      </div>
+      <!-- I don't want to mess up your js files so I'm
+       putting this here and you can decide where you want it -->
+       <!-- Credit: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal -->
+       <script>
+        // Get the modal
+        var modal = document.getElementById("notesModal");
+        
+        // Get the button that opens the modal
+        var btn = document.getElementById("notesButton");
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      </script> 
       <div class="recipe">
         <div class="leftcolumn">
           <h3>Ingredients</h3>
@@ -123,15 +186,6 @@
             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
           </ol>
-        </div>
-        <div id="notesModal" class="modal">
-          <span class="close">&times;</span>
-          <ul>
-            <li>Some notes</li>
-            <li>Some notes</li>
-            <li>Some notes</li>
-            <li>Some notes</li>
-          </ul>
         </div>
       </div>
     </div>
