@@ -28,11 +28,31 @@
           <p>New Recipe</p>
         </a>
         <p>List of recipes & groups (for desktop version)</p>
+        <!-- haven't made the settings page yet, just want to see
+              if this works -->
+        <button onclick="changeColourScheme()">Change Colour Scheme</button>
+
+        <!-- Again, don't want to mess with your js files so putting this here for now. -->
+        <script>
+          function changeColourScheme() {
+            var body = document.body;
+             
+            body.classList.toggle("body-dark");
+          }
+          </script>
       </div>
     </div>
     <!-- main content -->
     <div class="main">
       <div class="optionsMenu">
+        <div id="desktopHidden">
+          <div class="buttons">
+            <a href="#"> 
+            <img src="/images/icons/home-blue.png" style="width: 40px;" alt="Home">
+            <p>Home</p>
+            </a>
+          </div>
+        </div>  
         <div class="buttons">
           <button id="notesButton">
             <img src="/images/icons/notes-blue.png" style="width: 40px;" alt="Notes">
@@ -50,8 +70,13 @@
           <p>Delete</p>
         </div>
       </div>
-      <h2>Recipe Name</h2>
-      <div class="header">
+      <div class="overhead">
+        <h2>Recipe Name</h2>
+        <div id="desktopHidden">
+          <a href="#">
+            <img src="/images/icons/settings-black.png" style="width: 40px;" alt="Settings">
+          </a>
+        </div>
         <p>Prep Time:</p>
         <p>Cook Time:</p>
         <p>Total Time:</p>
@@ -66,7 +91,7 @@
             <!--
               Get rid of comments & placeholders
                 once css layout stuff is done
-                
+
                 <% if (Array.isArray(recipeData)) { %>
                 <% for (let data of recipeData) { %>
                   <li><%= data.recipe_note %></li>
@@ -189,13 +214,15 @@
         </div>
       </div>
     </div>
-    <div class="footer">
-      <h4>Links</h4>
-      <p>some link</p>
-      <h4>Options</h4>
-      <p>option</p>
-      <h4>Contact Us</h4>
-      <p>phone number</p>
+    <div id="mobileHidden">
+      <div class="footer">
+        <h4>Links</h4>
+        <p>some link</p>
+        <h4>Options</h4>
+        <p>option</p>
+        <h4>Contact Us</h4>
+        <p>phone number</p>
+      </div>
     </div>
   </body>
 </html>

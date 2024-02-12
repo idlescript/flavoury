@@ -1,3 +1,9 @@
+/* ----- overhead -------- */
+
+body {
+    margin: 0;
+}
+
 /* ------- navbar -------- */
 
 .navbar {
@@ -31,19 +37,48 @@ h3 {
 
 /* -------- footer --------- */
 
-/* unsure about this at the moment
-
 .footer {
     background-color: #4274b9;
     color: #b0dee4;
+    clear: both;
 }
 
-*/
+/* ------- screen size responsiveness - desktop ------- */
 
+#desktopHidden {
+    display: none;
+}
 
-/* ------- screen size responsiveness --------- */
+#mobileHidden {
+    display: contents;
+}
 
+/* ------- screen size responsiveness - mobile --------- */
 
+@media screen and (max-width: 600px) {
+
+    #desktopHidden {
+        display: contents;
+    }
+
+    #mobileHidden {
+        display: none;
+    }
+
+    .navbar {
+        display: none;
+        width: 100%;
+        height: auto;
+        float: bottom;  
+    }
+
+    .main {
+        float: none;
+        width: 100%;
+        padding: 0%;
+    }
+
+}
 
 
 
