@@ -35,9 +35,13 @@
         <!-- Again, don't want to mess with your js files so putting this here for now. -->
         <script>
           function changeColourScheme() {
-            var body = document.body;
-             
+            const body = document.body;
+            const leftcolumn = document.getElementById("leftcolumn");
+            const rightcolumn = document.getElementById("rightcolumn");
             body.classList.toggle("body-dark");
+            leftcolumn.classList.toggle("card-dark");
+            rightcolumn.classList.toggle("card-dark");
+
           }
           </script>
       </div>
@@ -138,7 +142,7 @@
         }
       </script> 
       <div class="recipe">
-        <div class="leftcolumn">
+        <div id="leftcolumn" class="card">
           <h3>Ingredients</h3>
           <!-- Get rid of comments & placeholders
                 once css layout stuff is done-->
@@ -191,7 +195,7 @@
             </li>
           </ul>    
         </div>
-        <div class="rightcolumn">
+        <div id="rightcolumn" class="card">
           <h3>Instructions:</h3>
           <!-- Get rid of comments & placeholders
                 once css layout stuff is done-->

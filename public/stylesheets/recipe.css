@@ -12,14 +12,6 @@ body {
     color: #070707
 }
 
-.leftcolumn {
-    background-color: #f5f3f4;
-    color: #070707;
-}
-.rightcolumn {
-    background-color: #f5f3f4;
-    color: #070707;
-}
 .card {
     background-color: #f5f3f4;
     color: #070707;
@@ -32,14 +24,6 @@ body {
     color: #ffffff;
 }
 
-.leftcolumn-dark {
-    background-color: #101a23;
-    color: #ffffff;
-}
-.rightcolumn-dark {
-    background-color: #101a23;
-    color: #ffffff;
-}
 .card-dark {
     background-color: #101a23;
     color: #ffffff;
@@ -90,14 +74,14 @@ button {
 
 /* ----- main content layout ----- */
 
-.leftcolumn {
+#leftcolumn {
     float: left;
     width: 34%;
     padding: 2%;
     border-radius: 6%;
 }
 
-.rightcolumn {
+#rightcolumn {
     float: right;
     width: 56%;
     padding: 2%;
