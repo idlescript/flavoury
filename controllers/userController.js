@@ -8,9 +8,20 @@ const getPasswordByEmail = async (email) => {
   const dbQuery = "SELECT password FROM app_user WHERE email=?;";
   return new Promise ((resolve, reject)=> global.db.get(dbQuery, [email], function(err, result) {
     if (err) {
-      reject(`Error deleting data: ${err}`);
+      reject(`Error getting data: ${err}`);
     } else {
       resolve(result.password);
+    }
+  }));  
+}
+
+const getUserIdByEmail = async (email) => {
+  const dbQuery = "SELECT id FROM app_user WHERE email=?;";
+  return new Promise ((resolve, reject)=> global.db.get(dbQuery, [email], function(err, result) {
+    if (err) {
+      reject(`Error getting data: ${err}`);
+    } else {
+      resolve(result.id);
     }
   }));  
 }
@@ -35,7 +46,7 @@ const saveUser = async (req, res, next) => {
       resolve(this.lastID);
     }
   }));
-};
+}
 
 const getAllUser = async(req, res, next) => { //testing usage only
   const dbQuery = "SELECT * FROM app_user;"
@@ -92,7 +103,7 @@ const deleteAllUser = async (req, res, next) => { // for testing usage only
       resolve("Data deleted!");
     }
   }));
-};
+}
 
 const deleteUser = async (req, res, next) => {
   const app_user_id = req.body.userId;
@@ -106,7 +117,7 @@ const deleteUser = async (req, res, next) => {
       resolve("Data deleted!");
     }
   }));
-};
+}
 
 
 const loginCheck = async (req, res, next) => {
@@ -115,6 +126,7 @@ const loginCheck = async (req, res, next) => {
 
   console.log(`email: ${email}, password: ${password}`)
   const dbPassword = await getPasswordByEmail(email);
+  const userId = await getUserIdByEmail(email);
 
   console.log(`dbPassword: ${dbPassword}`)
 
@@ -124,7 +136,12 @@ const loginCheck = async (req, res, next) => {
     } else {
       if (result) {
         console.log('Password is correct');
-        res.send("Password is correct");
+
+        req.session.userId = userId;
+
+        console.log(`req.session.userId: ${req.session.userId}`)
+
+        res.redirect('/test');
       } else {
         console.log('Password is incorrect');
         res.send("Password is wrong");

@@ -183,10 +183,16 @@
       </select>
       <label>Search for recipe</label>
       <input type="text" name="searchQuery" required>
-      <br><br>
+      <br>
       <input type="submit" value="Submit">
     </form>
 
+    <br><strong>------ Upload Recipe Image (refresh page manually) ------</strong><br>
+    <form action="/recipe/upload-image" method="post" enctype="multipart/form-data">
+      <input type="file" name="recipeImage" />
+      <br>
+      <input type="submit" value="Submit">
+    </form>
 
     <br><br><br><strong>------ User data: ------</strong><br><br>
     <% if (!userData || userData.length < 1) { %>
