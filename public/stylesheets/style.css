@@ -12,14 +12,34 @@ body {
 
     float: left;
     width: 16%;
-    height: 150vh;
-    padding:
-    2%;
+    height: 120vh;
+    padding: 2%;
+
+    position: relative;
+}
+
+.searchbar {
+    display: flex;
+    align-items: center;
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
 }
 
 a {
     text-decoration: none;
     color: #b0dee4;
+}
+
+.navbar img {
+    padding-right: 6px;
+}
+
+.settings {
+    position: absolute;
+    bottom: 0;
 }
 
 /* -------- main content --------- */

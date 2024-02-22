@@ -10,13 +10,17 @@
     <div class="navbar">
       <div class="mainNav">
         <div class="searchbar">
-          <img src="/images/icons/search-black.png" style="width: 32px;" alt="Search">
+          <button type="submit">
+            <img src="/images/icons/search-black.png" style="width: 32px;" alt="Search">
+          </button>
           <p><input type="text" placeholder="Search Recipe... "></p>
         </div>
-        <a href="#">
-          <img src="/images/icons/settings-blue.png" style="width: 32px;" alt="Settings">
-          <p>Settings</p>
-        </a>
+        <div class="settings">
+          <a href="#">
+            <img src="/images/icons/settings-blue.png" style="width: 32px;" alt="Settings">
+            <p>Settings</p>
+          </a>
+        </div>
       </div>
       <div class="secondaryNav">
         <a href="#">
@@ -27,23 +31,21 @@
           <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Recipe">
           <p>New Recipe</p>
         </a>
+          <!--
+              Get rid of comments & placeholders
+                once css layout stuff is done
+
+            <% if (Array.isArray(recipeFolder)) { %>
+              <% for (let data of recipeFolder) { %>
+                <p><%= data.folder_name %></p>
+              <% } %>
+            <% } else { %>
+              <p><%= recipeFolder.folder_name %></p>
+            <% } %>
+           -->
+
         <p>List of recipes & groups (for desktop version)</p>
-        <!-- haven't made the settings page yet, just want to see
-              if this works -->
         <button onclick="changeColourScheme()">Change Colour Scheme</button>
-
-        <!-- Again, don't want to mess with your js files so putting this here for now. -->
-        <script>
-          function changeColourScheme() {
-            const body = document.body;
-            const leftcolumn = document.getElementById("leftcolumn");
-            const rightcolumn = document.getElementById("rightcolumn");
-            body.classList.toggle("body-dark");
-            leftcolumn.classList.toggle("card-dark");
-            rightcolumn.classList.toggle("card-dark");
-
-          }
-          </script>
       </div>
     </div>
     <!-- main content -->
@@ -81,6 +83,20 @@
             <img src="/images/icons/settings-black.png" style="width: 40px;" alt="Settings">
           </a>
         </div>
+                <!--
+          <% if (Array.isArray(recipeData)) { %>
+            <% for (let data of recipeData) { %>
+              <p>Prep Time: <%= data.prep_time %></p>
+              <p>Cook Time: <%= data.cook_time %></p>
+              <p>Servings: <%= data.servings_amount %></p>
+        
+            <% } %>
+          <% } else { %>
+            <p>Servings: <%= recipeData.servings_amount %></p>
+            <p>Prep Time: <%= recipeData.prep_time %></p>
+            <p>Cook Time: <%= recipeData.cook_time %></p>
+          <% } %>
+        -->
         <p>Prep Time:</p>
         <p>Cook Time:</p>
         <p>Total Time:</p>
@@ -88,7 +104,7 @@
       </div>
       <!-- recipe notes popup -->
       <div id="notesModal" class="modal">
-        <div class="notesContent">
+        <div id="foo" class="notesContent">
           <span class="close">&times;</span>
           <h3>Notes</h3>
           <ul>
@@ -111,36 +127,6 @@
           </ul>
         </div>
       </div>
-      <!-- I don't want to mess up your js files so I'm
-       putting this here and you can decide where you want it -->
-       <!-- Credit: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal -->
-       <script>
-        // Get the modal
-        var modal = document.getElementById("notesModal");
-        
-        // Get the button that opens the modal
-        var btn = document.getElementById("notesButton");
-        
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-        
-        // When the user clicks the button, open the modal 
-        btn.onclick = function() {
-          modal.style.display = "block";
-        }
-        
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-        
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
-      </script> 
       <div class="recipe">
         <div id="leftcolumn" class="card">
           <h3>Ingredients</h3>
@@ -228,5 +214,7 @@
         <p>phone number</p>
       </div>
     </div>
+    <!-- Loading js at the end to improve display speed-->
+    <script type="text/javascript" src="/javascripts/main.js"></script>
   </body>
 </html>

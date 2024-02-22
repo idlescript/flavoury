@@ -3,8 +3,215 @@
   <head>
     <title>Flavoury</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/recipe.css' />
   </head>
   <body>
-    <h1>Flavoury</h1>
+    <!-- navbar -->
+    <div class="navbar">
+      <div class="mainNav">
+        <div class="searchbar">
+          <button type="submit">
+            <img src="/images/icons/search-black.png" style="width: 32px;" alt="Search">
+          </button>
+          <p><input type="text" placeholder="Search Recipe... "></p>
+        </div>
+        <div class="settings">
+          <a href="#">
+            <img src="/images/icons/settings-blue.png" style="width: 32px;" alt="Settings">
+            <p>Settings</p>
+          </a>
+        </div>
+      </div>
+      <div class="secondaryNav">
+        <a href="#">
+          <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Group">
+          <p>New Group</p>
+        </a>
+        <a href="#">
+          <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Recipe">
+          <p>New Recipe</p>
+        </a>
+          <!--
+              Get rid of comments & placeholders
+                once css layout stuff is done
+
+            <% if (Array.isArray(recipeFolder)) { %>
+              <% for (let data of recipeFolder) { %>
+                <p><%= data.folder_name %></p>
+              <% } %>
+            <% } else { %>
+              <p><%= recipeFolder.folder_name %></p>
+            <% } %>
+           -->
+
+        <p>List of recipes & groups (for desktop version)</p>
+        <button onclick="changeColourScheme()">Change Colour Scheme</button>
+      </div>
+    </div>
+    <!-- main content -->
+    <div class="main">
+      <div class="optionsMenu">
+        <div id="desktopHidden">
+          <div class="buttons">
+            <a href="#"> 
+            <img src="/images/icons/home-blue.png" style="width: 40px;" alt="Home">
+            <p>Home</p>
+            </a>
+          </div>
+        </div>  
+        <div class="buttons">
+          <button id="notesButton">
+            <img src="/images/icons/notes-blue.png" style="width: 40px;" alt="Notes">
+            <p>Notes</p>
+          </button>
+        </div>
+        <div class="buttons">
+          <a href="#">
+            <img src="/images/icons/save-blue.png"style="width: 40px;" alt="Save Recipe">
+            <p>Save</p>
+          </a>
+        </div>
+      </div>
+      <div class="overhead">
+        <h2>Recipe Name</h2>
+        <div id="desktopHidden">
+          <a href="#">
+            <img src="/images/icons/settings-black.png" style="width: 40px;" alt="Settings">
+          </a>
+        </div>
+        <!--
+          <% if (Array.isArray(recipeData)) { %>
+            <% for (let data of recipeData) { %>
+              <p>Prep Time: <%= data.prep_time %></p>
+              <p>Cook Time: <%= data.cook_time %></p>
+              <p>Servings: <%= data.servings_amount %></p>
+        
+            <% } %>
+          <% } else { %>
+            <p>Servings: <%= recipeData.servings_amount %></p>
+            <p>Prep Time: <%= recipeData.prep_time %></p>
+            <p>Cook Time: <%= recipeData.cook_time %></p>
+          <% } %>
+        -->
+
+        <p>Prep Time:</p>
+        <p>Cook Time:</p>
+        <p>Total Time:</p>
+        <p>Servings:</p>
+      </div>
+      <!-- recipe notes popup -->
+      <div id="notesModal" class="modal">
+        <div id="foo" class="notesContent">
+          <span class="close">&times;</span>
+          <h3>Notes</h3>
+          <ul>
+            <!--
+              Get rid of comments & placeholders
+                once css layout stuff is done
+
+                <% if (Array.isArray(recipeData)) { %>
+                <% for (let data of recipeData) { %>
+                  <li><%= data.recipe_note %></li>
+                  <% } %>
+                <% } else { %>
+                  <%= recipeData.recipe_note %>
+                <% } %>
+             -->
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Some notes</li>
+            <li>Some notes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="recipe">
+        <div id="leftcolumn" class="card">
+          <h3>Ingredients</h3>
+          <!-- Get rid of comments & placeholders
+                once css layout stuff is done-->
+          <!--
+            <ul>
+              <% recipeData.forEach(recipeItem => { %>
+                <% recipeItem.ingredient.forEach(data => { %>
+                  <li>
+                    <label class="container">
+                      <input type="checkbox">
+                      <span class="checkmark">
+                        <%= data.ingredient_name %>
+                      </span>
+                    </label>
+                  </li>
+                <% }); %>
+              <% }); %>
+            </ul>
+          -->
+          <ul>
+            <li>
+              <label class="container">
+                <input type="checkbox">
+                <span class="checkmark">Ingredient</span>
+              </label>
+            </li>
+            <li>
+              <label class="container">
+                <input type="checkbox">
+                <span class="checkmark">Ingredient</span>
+              </label>
+            </li>
+            <li>
+              <label class="container">
+                <input type="checkbox">
+                <span class="checkmark">Ingredient</span>
+              </label>
+            </li>
+            <li>
+              <label class="container">
+                <input type="checkbox">
+                <span class="checkmark">Ingredient</span>
+              </label>
+            </li>
+            <li>
+              <label class="container">
+                <input type="checkbox">
+                <span class="checkmark">Ingredient</span>
+              </label>
+            </li>
+          </ul>    
+        </div>
+        <div id="rightcolumn" class="card">
+          <h3>Instructions:</h3>
+          <!-- Get rid of comments & placeholders
+                once css layout stuff is done-->
+          <!--
+            <ol>
+              <% recipeData.forEach(recipeItem => { %>
+                <% recipeItem.instruction.forEach(data => { %>
+                  <li><%= data.instruction_text %></li>
+                <% }); %>
+              <% }); %>
+            </ol>
+          -->
+          <ol>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div id="mobileHidden">
+      <div class="footer">
+        <h4>Links</h4>
+        <p>some link</p>
+        <h4>Options</h4>
+        <p>option</p>
+        <h4>Contact Us</h4>
+        <p>phone number</p>
+      </div>
+    </div>
+    <!-- Loading js at the end to improve display speed-->
+    <script type="text/javascript" src="/javascripts/main.js"></script>
   </body>
 </html>
