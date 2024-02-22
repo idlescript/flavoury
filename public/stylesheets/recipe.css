@@ -5,40 +5,6 @@
     color: #b0dee4;
 }
 
-/* light mode */
-
-body {
-    background-color: #ffffff;
-    color: #070707
-}
-
-.card {
-    background-color: #f5f3f4;
-    color: #070707;
-}
-
-.notesContent {
-    background-color: #f5f3f4;
-    color: #070707;
-}
-
-/* dark mode */
-
-.body-dark {
-    background-color: #060709;
-    color: #ffffff;
-}
-
-.card-dark {
-    background-color: #101a23;
-    color: #ffffff;
-}
-
-.notesContent-dark {
-    background-color: #101a23;
-    color: #ffffff;
-}
-
 /* ------ options menu ------- */
 .optionsMenu {
     float: right;
@@ -59,13 +25,6 @@ body {
     padding-right: 2%;
     float: left;
     text-align: center;
-}
-
-button {
-    background-color: #4274b9;
-    color: #b0dee4;
-    border: none;
-    cursor: pointer;
 }
 
 /* ------ overhead -----  */

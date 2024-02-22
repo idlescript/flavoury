@@ -2,38 +2,12 @@
 <html>
   <head>
     <title>Flavoury</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: #4274b9;
-      }
-      .form-container {
-        margin: 0 auto;
-        width: 92%;
-        min-width: 320px;
-        max-width: 500px;
-        margin-top: 9vh;
-        padding: 12px;
-        background-color: white;
-      }
-      .form-title {
-        margin-bottom: 20px;
-      }
-      .form-footer-content{
-        margin: 15px 0;
-      }
-      label, input {
-        margin: 10px 0;
-        width: 100%;
-        box-sizing: border-box;
-      }
-    </style>
+    <link rel='stylesheet' href='/stylesheets/registration.css' />
   </head>
   <body>
 
     <div class="form-container">
-      <div class="form-title">Login</div>
+      <div class="form-title"><h3>Login</h3></div>
       <form action="/user/login-check" method="post">
         <label>Email:</label>
         <input type="email" name="email" required>
@@ -43,7 +17,7 @@
       </form>
       <div class="form-footer">
         <div class="form-footer-content">New user? <a href="/signup">Sign up</a></div>
-        <div class="form-footer-content"><a href="/public-cookbook">Browse recipe as guest</a></div>
+        <div class="form-footer-content"><a href="/public-cookbook">Browse recipes as guest</a></div>
       </div>
     </div>
   </body>
