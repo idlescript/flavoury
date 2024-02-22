@@ -17,6 +17,11 @@ body {
     color: #070707;
 }
 
+.notesContent {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+
 /* dark mode */
 
 .body-dark {
@@ -25,6 +30,11 @@ body {
 }
 
 .card-dark {
+    background-color: #101a23;
+    color: #ffffff;
+}
+
+.notesContent-dark {
     background-color: #101a23;
     color: #ffffff;
 }
@@ -119,7 +129,6 @@ ol li {
   /* Modal Content */
   .notesContent {
     position: relative;
-    background-color: #f5f3f4;
     padding-left: 20px;
     padding-right: 20px;
     border: 2px solid #4274b9;
@@ -178,14 +187,14 @@ ol li {
         display: none;
     }
 
-    .leftcolumn {
+    #leftcolumn {
         float: none;
         width: 92%;
         padding: 2%;
         margin: 2%;
     }
     
-    .rightcolumn {
+    #rightcolumn {
         float: none;
         width: 92%;
         padding: 2%;
