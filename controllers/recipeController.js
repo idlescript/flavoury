@@ -1,4 +1,5 @@
-const userController = require('./userController')
+const userController = require('./userController');
+const { uploadRecipeImage } = require('../app');
 
 function randomDigit(digit_amount) {  // for testing purpose only
   return Math.floor(10 ** (digit_amount-1) + Math.random() * (10 ** digit_amount-1));
@@ -263,7 +264,28 @@ const searchRecipe = async (req, res, next) => {
       resolve(result);
     }
   }));
-};
+}
+
+// const uploadImage = async (req, res, next) => {
+//   uploadRecipeImage.single('recipeImage')(req, res, function (err) {
+//     // if (err instanceof multer.MulterError) {
+//     //   // Multer error occurred when uploading
+//     //   return res.status(400).json({ error: 'Error uploading file' });
+//     // } else if (err) {
+//     //   // Unknown error occurred when uploading
+//     //   return res.status(500).json({ error: 'Internal server error' });
+//     // }
+
+//     // File upload successful
+//     // req.file contains information about the uploaded file
+//     // req.body contains other form fields if present
+//     console.log(`req.file: ${JSON.stringify(req.body)}`);
+//     console.log(`req.body: ${JSON.stringify(req.body)}`);
+//     return res.status(200).json({ message: 'File uploaded successfully' });
+//   });
+// };
+
+
 
 module.exports = {
   createRecipeFolder,
@@ -278,5 +300,6 @@ module.exports = {
   editRecipe,
   deleteAllRecipe,
   deleteRecipe,
-  searchRecipe
+  searchRecipe,
+  // uploadImage
 }

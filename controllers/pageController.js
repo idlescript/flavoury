@@ -1,5 +1,5 @@
-const userController = require('./userController')
-const recipeController = require('./recipeController')
+const userController = require('./userController');
+const recipeController = require('./recipeController');
 
 
 //insert user data, recipe_folder data, recipe data for testing
