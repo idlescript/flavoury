@@ -13,11 +13,13 @@ router.get('/delete-all-data', pageController.deleteAllData);
 router.get('/', pageController.loadHomepage);
 
 //route to other pages
-router.get('/personal-cookbook/:userId?', pageController.loadPersonalCookbook);
-router.get('/personal-recipe/:userId?/:recipeId?', pageController.loadPersonalRecipe);
-router.get('/public-cookbook/:sharing?', pageController.loadPublicCookbook);
+router.get('/login', pageController.loadLogin);
+router.get('/signup', pageController.loadSignup);
+router.get('/personal-cookbook', pageController.loadPersonalCookbook);
+router.get('/personal-recipe/:recipeId?', pageController.loadPersonalRecipe);
+router.get('/public-cookbook', pageController.loadPublicCookbook);
 router.get('/public-recipe/:recipeId?', pageController.loadPublicRecipe);
-router.get('/edit-recipe/:userId?/:recipeId?', pageController.loadEditRecipe);
-router.get('/settings/:userId?', pageController.loadSettings);
+router.get('/edit-recipe/:recipeId?', pageController.loadEditRecipe);
+router.get('/settings', pageController.loadSettings);
 
 module.exports = router;

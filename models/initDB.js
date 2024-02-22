@@ -16,7 +16,8 @@ async function initializeDatabase() {
       password TEXT NOT NULL,
       signup_datetime TEXT DEFAULT CURRENT_TIMESTAMP,
       last_login TEXT DEFAULT CURRENT_TIMESTAMP,
-      profile_picture TEXT
+      profile_picture TEXT,
+      dark_mode INTEGER
     );
 
     CREATE TABLE IF NOT EXISTS recipe_folder (
@@ -39,16 +40,9 @@ async function initializeDatabase() {
       ingredient TEXT,
       instruction TEXT,
       recipe_note TEXT,
+      photo TEXT,
       FOREIGN KEY (app_user_id) REFERENCES app_user (id),
       FOREIGN KEY (recipe_folder_id) REFERENCES recipe_folder (id) ON DELETE RESTRICT
-    );
-
-    CREATE TABLE IF NOT EXISTS recipe_photo (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      recipe_id INTEGER NOT NULL,
-      photo TEXT,
-      caption TEXT,
-      FOREIGN KEY (recipe_id) REFERENCES recipe (id) ON DELETE CASCADE
     );
   `);
 

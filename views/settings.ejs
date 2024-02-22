@@ -2,9 +2,39 @@
 <html>
   <head>
     <title>Flavoury</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #4274b9;
+      }
+      .container {
+        margin: 0 auto;
+        width: 92%;
+        min-width: 320px;
+        max-width: 500px;
+        margin-top: 9vh;
+        padding: 12px;
+        background-color: white;
+      }
+      .content{
+        margin-top: 35px;
+      }
+      .logout-btn{
+        padding: 5px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Flavoury</h1>
+    <div class="container">
+      <div class="title">
+        Settings page
+      </div>
+      <div class="content">
+        <form action="/user/logout" method="POST">
+          <button type="submit" class="logout-btn">Logout</button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

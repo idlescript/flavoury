@@ -61,11 +61,38 @@ const loadTestPage = async (req, res, next) => {
 
 const loadHomepage = async (req, res, next) => {
   try {
+    if (!req.session.userId) {
+      res.redirect('/login');
+    }
+    else {
+      res.redirect('/personal-cookbook');
+    }
+  }
+  catch (err) {
+    console.error(`error: ${err}`);
+  }
+};
+
+const loadLogin = async (req, res, next) => {
+  try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
     const recipeData = await recipeController.getAllRecipe(req, res, next);
 
-    res.render('index', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    res.render('login', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+  }
+  catch (err) {
+    console.error(`error: ${err}`);
+  }
+};
+
+const loadSignup = async (req, res, next) => {
+  try {
+    const userData = await userController.getAllUser(req, res, next);
+    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
+
+    res.render('signup', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -74,11 +101,11 @@ const loadHomepage = async (req, res, next) => {
 
 const loadPersonalCookbook = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
+    if (!req.session.userId) {
+      res.redirect('/login');
+    }
     const recipeData = await recipeController.getAllRecipe(req, res, next);
-
-    res.render('personalCookbook', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    res.render('personalCookbook', { recipeData: recipeData });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -89,7 +116,7 @@ const loadPersonalRecipe = async (req, res, next) => {
   try {
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    const recipeData = await recipeController.getAllRecipe(req, res, next);
 
     res.render('personalRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
   }
@@ -126,11 +153,28 @@ const loadPublicRecipe = async (req, res, next) => {
 
 const loadEditRecipe = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getRecipe(req, res, next);
+    // If user session not exist, redirect to login page
+    if (!req.session.userId) {
+      res.redirect('/login');
+      return;
+    }
 
-    res.render('editRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    const recipeId = req.params.recipeId;
+    let recipeData;
+    if (recipeId) {
+      recipeData = await recipeController.getRecipeByRecipeId(recipeId, req, res);
+    }
+
+    // Redirect to homepage if no recipeData and no recipeId provided
+    if (recipeId && recipeData=='') {
+      console.log('redirect to / , recipedata: '+recipeData);
+      res.redirect('/');
+      return;
+    }
+
+    console.log('recipeData inside loadeditrecipe:'+JSON.stringify(recipeData));
+
+    res.render('editRecipe', { recipeData: recipeData, recipeId: recipeId});
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -157,6 +201,8 @@ module.exports = {
   deleteAllData,
   loadTestPage,
   loadHomepage,
+  loadLogin,
+  loadSignup,
   loadPersonalCookbook,
   loadPersonalRecipe,
   loadPublicCookbook,

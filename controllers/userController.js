@@ -1,8 +1,14 @@
+const recipeController = require('./recipeController');
 const bcrypt = require("bcryptjs");
 
 function randomDigit(digit_amount) {  // for testing purpose only
   return Math.floor(10 ** (digit_amount-1) + Math.random() * (10 ** digit_amount-1));
 }
+
+const errorRedirectMsg = (message) => {
+    return `<p>${message}</p>
+            <a href="/">Go Home</a>`;
+};
 
 const getPasswordByEmail = async (email) => {
   const dbQuery = "SELECT password FROM app_user WHERE email=?;";
@@ -10,9 +16,12 @@ const getPasswordByEmail = async (email) => {
     if (err) {
       reject(`Error getting data: ${err}`);
     } else {
-      resolve(result.password);
+      if (result) {
+        resolve(result.password);
+      }
+      resolve();
     }
-  }));  
+  }));
 }
 
 const getUserIdByEmail = async (email) => {
@@ -21,29 +30,41 @@ const getUserIdByEmail = async (email) => {
     if (err) {
       reject(`Error getting data: ${err}`);
     } else {
-      resolve(result.id);
+      if (result) {
+        resolve(result.id);
+      }
+      resolve();
     }
-  }));  
+  }));
 }
 
 
 const saveUser = async (req, res, next) => {
-  const fullname = (req && req.body.fullname) ? req.body.fullname : "fullname"+randomDigit(4);
-  const email = (req && req.body.email) ? req.body.email.toLowerCase() : "email"+randomDigit(4);
-  const password = (req && req.body.password) ? req.body.password : "password"+randomDigit(4);
+  const fullname = req.body.fullname;
+  const email = req.body.email.toLowerCase();
+  const password = req.body.password;
   const hashedPassword = await bcrypt.hash(password, 8)
-  const profile_picture = "profilepic"+randomDigit(4);
+  const profile_picture = '';
+  const dark_mode = 0;
 
+  req.body = { ...req.body, folderName: '_root' };
 
+  const update_values = [fullname, email, hashedPassword, profile_picture, dark_mode];
+  const dbQuery = "INSERT INTO app_user ('fullname', 'email', 'password', 'profile_picture', 'dark_mode') VALUES( ?, ?, ?, ?, ?);";
 
-  const update_values = [fullname, email, hashedPassword, profile_picture];
-  const dbQuery = "INSERT INTO app_user ('fullname', 'email', 'password', 'profile_picture') VALUES( ?, ?, ?, ?);";
-
-  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, async function (err) {
     if (err) {
       reject(`Error saving data: ${err}`);
     } else {
       resolve(this.lastID);
+      req.session.userId = this.lastID;
+
+      const recipeFolderId = await recipeController.createRecipeFolder(req, res, next);
+      req.session.folderId = recipeFolderId;
+
+      console.log(`req.session.userId: ${req.session.userId}`)
+      console.log(`recipeFolderId: ${recipeFolderId}`)
+      res.redirect('/personal-cookbook');
     }
   }));
 }
@@ -124,13 +145,16 @@ const loginCheck = async (req, res, next) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
 
-  console.log(`email: ${email}, password: ${password}`)
   const dbPassword = await getPasswordByEmail(email);
+  if (dbPassword===undefined) {
+    res.send(errorRedirectMsg("User doesn't exist"));
+  }
+
   const userId = await getUserIdByEmail(email);
 
   console.log(`dbPassword: ${dbPassword}`)
 
-  bcrypt.compare(password, dbPassword, (err, result) => {
+  bcrypt.compare(password, dbPassword, async (err, result) => {
     if (err) {
         console.error(err);
     } else {
@@ -139,16 +163,26 @@ const loginCheck = async (req, res, next) => {
 
         req.session.userId = userId;
 
-        console.log(`req.session.userId: ${req.session.userId}`)
+        const recipeFolder = await recipeController.getRecipeFolder(req, res);
 
-        res.redirect('/test');
+        req.session.folderId = recipeFolder[0].id;
+
+        console.log(`req.session.folderId:`+req.session.folderId)
+
+        res.redirect('/personal-cookbook');
       } else {
         console.log('Password is incorrect');
-        res.send("Password is wrong");
+        res.send(errorRedirectMsg('Password is wrong'));
       }
     }
   });
 }
+
+const logoutUser = async (req, res, next) => {
+  req.session.destroy();
+  res.redirect('/');
+};
+
 
 module.exports = {
   saveUser,
@@ -157,5 +191,6 @@ module.exports = {
   editUser,
   deleteAllUser,
   deleteUser,
-  loginCheck
+  loginCheck,
+  logoutUser
 }
