@@ -30,7 +30,8 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const fileExtension = path.extname(file.originalname);
-    const newFilename = Date.now() + '-' + Math.round(Math.random() * 1E4)+fileExtension;
+    const newFilename = 'recipe-image-'+req.session.recipeId+fileExtension;
+    // const newFilename = Date.now() + '-' + Math.round(Math.random() * 1E4)+fileExtension;
     cb(null, newFilename);
   }
 });
@@ -76,6 +77,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', pageRouter);
 app.use('/user', userRouter);
 app.use('/recipe', recipeRouter);
+
+app.use('/uploads', express.static('uploads'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

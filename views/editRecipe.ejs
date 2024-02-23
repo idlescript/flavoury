@@ -13,7 +13,6 @@
         width: 92%;
         min-width: 320px;
         max-width: 500px;
-        margin-top: 9vh;
         padding: 12px;
         background-color: white;
       }
@@ -43,13 +42,23 @@
         resize: none;
         margin: 10px 0;
       }
+      .btn {
+        margin: 20px auto;
+        width: 180px;
+      }
+      .btn a {
+        color: black;
+      }
     </style>
   </head>
   <body>
+    
+    <div class="btn"><a href="javascript:void(0)" onclick="submitRecipeForm();">Save Recipe</a></div>
+
     <div class="form-container">
       <div class="form-title">Create / Edit Recipe</div>
 
-      <form action="/recipe/save-edit-recipe" method="post">
+      <form action="/recipe/edit-recipe" method="post" id="submit-recipe-form">
         <label>Recipe Title:</label>
         <input type="text" name="title" value="<%= (recipeData) ? recipeData[0].recipe_title : '' %>">
 
@@ -123,23 +132,30 @@
 
         <hr>
         <div>
-          <label>recipe note:</label>
+          <label>Recipe note:</label>
           <textarea name="recipeNote"><%= (recipeData) ? recipeData[0].recipe_note : '' %></textarea>
         </div>
 
-        <hr>
-        <input type="submit" value="Submit">
         <input type="hidden" name="recipeId" value="<%= recipeId %>">
+      </form>
+
+      <hr>
+
+      <form action="/recipe/upload-image" method="post" id="submit-image-form" enctype="multipart/form-data">
+        <label>Upload Image:</label>
+        <input type="file" name="recipeImage" id="recipeImageInput">
+        <input type="hidden" name="recipeId" value="<%= recipeId %>">
+        <br>
+        <div class="btn"><a href="javascript:void(0)" onclick="submitImageForm();" id="upload-image-btn">Upload Image</a></div>
       </form>
 
     </div>
 
-    <!-- To upload image, still need some adjustment -->
-    <!-- <form action="/recipe/upload-image" method="post" enctype="multipart/form-data">
-      <input type="file" name="recipeImage" />
-      <br>
-      <input type="submit" value="Submit">
-    </form> -->
+    <div class="btn"><a href="javascript:void(0)" onclick="submitRecipeForm();">Save Recipe</a></div>
+    <div class="btn"><a href="/personal-cookbook" onclick="submitRecipeForm();">Back to Personal Cookbook</a></div>
+
+
+
 
     <script>
       // add new input box to ingredient or instruction
@@ -164,6 +180,37 @@
         let container = document.getElementById(boxName+'-group');
         container.appendChild(newBox);
       }
+
+      // submit recipe form
+      const recipeForm = document.getElementById('submit-recipe-form');
+      function submitRecipeForm() {
+        recipeForm.submit();
+      }
+
+      // submit image form
+      const imageForm = document.getElementById('submit-image-form');
+      const recipeImageInput = document.getElementById('recipeImageInput');
+      async function submitImageForm() {
+        if (recipeImageInput.files.length === 0) {
+            alert('Please select an image.');
+        } else {
+          const imageFormData = new FormData(imageForm);
+          console.log(imageFormData);
+          const response = await fetch('/recipe/upload-image', {
+            method: 'POST',
+            body: imageFormData
+          });
+
+          const result = await response.json();
+
+          if (result) {
+            recipeImageInput.disabled = true;
+            document.getElementById('upload-image-btn').remove();
+            alert (result.message);
+          }
+        }
+      }
+
     </script>
   </body>
 </html>

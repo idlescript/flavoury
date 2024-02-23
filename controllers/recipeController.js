@@ -6,6 +6,22 @@ function randomDigit(digit_amount) {  // for testing purpose only
   return Math.floor(10 ** (digit_amount-1) + Math.random() * (10 ** digit_amount-1));
 }
 
+const saveImageFilename = async(req, res, next) => {
+  const recipe_id = req.body.recipeId;
+  const image_name = req.body.imageName;
+
+  const update_values = [image_name, recipe_id];
+
+  const dbQuery = "UPDATE recipe SET photo=? WHERE id=?;"
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
+    if (err) {
+      reject(`Error updating data: ${err}`);
+    } else {
+      resolve(this.lastID);
+    }
+  }));
+}
+
 const getFolderIdFromRecipeId = async (recipeId) => {
   const dbQuery = "SELECT recipe_folder_id FROM recipe WHERE id=?"
   return new Promise ((resolve, reject)=> global.db.get(dbQuery, [recipeId], function(err, result) {
@@ -131,7 +147,7 @@ const saveRecipe = async (req, res, next) => {
 
   const app_user_id = req.session.userId;
   const recipe_folder_id = req.session.folderId;
-  const recipe_title = req.body.title;
+  const recipe_title = (req.body.title) ? req.body.title : 'No Title';
   const share_to_public = req.body.sharing;
   const servings_amount = req.body.servings;
   const prep_time = req.body.prepTime;
@@ -144,19 +160,25 @@ const saveRecipe = async (req, res, next) => {
   let ingredient = [];
   let instruction = [];
 
-  // remove empty string in the array
-  unsorted_ingredient.forEach((item) => {
-    if (item.trim()) {
-      ingredient.push(item);
-    }
-  })
+  console.log('save recipe, share_to_public:'+share_to_public);
 
-  // remove empty string in the array
-  unsorted_instruction.forEach((item) => {
-    if (item.trim()) {
-      instruction.push(item);
-    }
-  })
+  // remove empty string in the array, if array is not empty 
+  if (unsorted_ingredient) {
+    unsorted_ingredient.forEach((item) => {
+      if (item.trim()) {
+        ingredient.push(item);
+      }
+    })
+  }
+
+  // remove empty string in the array, if array is not empty
+  if (unsorted_instruction) {
+    unsorted_instruction.forEach((item) => {
+      if (item.trim()) {
+        instruction.push(item);
+      }
+    })
+  }
 
   ingredient = JSON.stringify(ingredient);
   instruction = JSON.stringify(instruction);
@@ -169,17 +191,12 @@ const saveRecipe = async (req, res, next) => {
                           VALUES\
                           ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
 
-
-  console.log('saveRecipe end');
-
   return new Promise ((resolve, reject) => global.db.run(dbQueryRecipe, update_values, function (err) {
     if (err) {
-      console.log(err);
       reject(`Error saving data: ${err}`);
     } else {
-      console.log('above resolve, resolve: '+resolve);
       resolve(this.lastID);
-      res.redirect('/personal-cookbook');
+      res.redirect(`/edit-recipe/${this.lastID}`);
     }
   }));
 }
@@ -228,7 +245,7 @@ const getRecipeByRecipeId = async(recipeId, req, res) => {
 
 const editRecipe = async(req, res, next) => {
   const recipe_id = req.body.recipeId;
-  const recipe_title = req.body.title;
+  const recipe_title = (req.body.title.trim()) ? req.body.title : 'No Title';
   const share_to_public = req.body.sharing;
   const servings_amount = req.body.servings;
   const prep_time = req.body.prepTime;
@@ -240,6 +257,8 @@ const editRecipe = async(req, res, next) => {
 
   let ingredient = [];
   let instruction = [];
+
+  console.log('edit recipe, share_to_public:'+share_to_public);
 
   // remove empty string in the array
   if (unsorted_ingredient) {
@@ -301,24 +320,54 @@ const deleteRecipe = async (req, res, next) => {
 }
 
 const searchRecipe = async (req, res, next) => {
-  const searchType = req.body.searchType;
-  const searchQuery = `%${req.body.searchQuery}%`;
+  const searchMode = req.body.searchMode;
+  const searchQuery = `%${req.body.searchQuery.trim()}%`;
 
-  const update_values = [searchQuery];
+  // If user who is not logged in try to search personal recipe, return immediately
+  if (searchMode!=="public") {
+    if (!req.session.userId) {
+      return;
+    }
+  }
+
+  console.log('searchRecipe, searchMode: '+searchMode);
+  console.log('searchRecipe, searchQuery: '+searchQuery);
+
+  const userId = req.session.userId;
+  let update_values;
   let dbQuery;
 
-  if (searchType==="public") {
+  console.log('searchRecipe, typeof userId: '+typeof userId);
+
+  if (searchMode==="public") {
     // search public recipe
-    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND NOT share_to_public='0'";
+    update_values = [searchQuery];
+    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND share_to_public = '1'";
   } else {
     // search personal recipe
-    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND share_to_public='0'";
+    update_values = [searchQuery, userId];
+    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND share_to_public IS NULL AND app_user_id=?";
   }
 
   return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
     if (err) {
       reject(`Error querying data: ${err}`);
     } else {
+      console.log('search result: '+JSON.stringify(result));
+      resolve(result);
+    }
+  }));
+}
+
+const getRandomPublicRecipe = async (req, res, next) => {
+
+  dbQuery = "SELECT * FROM recipe WHERE share_to_public = '1' ORDER BY RANDOM() LIMIT 10";
+
+  return new Promise ((resolve, reject) => global.db.all(dbQuery, function (err, result) {
+    if (err) {
+      reject(`Error querying data: ${err}`);
+    } else {
+      console.log('getRandomPublicRecipe() result: '+JSON.stringify(result));
       resolve(result);
     }
   }));
@@ -332,11 +381,10 @@ const uploadImage = async (req, res, next) => {
   }
 
   const userId = req.session.userId;
-  console.log('inside app.post()');
-  console.log('req.session: '+typeof req.session);
+  console.log('inside uploadImage()');
   console.log('req.session.userId: '+ userId);
 
-  uploadRecipeImage(req, res, function(err) { 
+  uploadRecipeImage(req, res, async function(err) { 
     if (err instanceof multer.MulterError) {
       // Multer error occurred when uploading
       return res.status(400).json({ error: 'Error uploading file' });
@@ -344,14 +392,17 @@ const uploadImage = async (req, res, next) => {
       // Unknown error occurred when uploading
       return res.status(500).json({ error: 'Internal server error' });
     }
+    const photo = `uploads/${userId}/images/${req.file.filename}`;
+    req.body = { ...req.body, imageName: photo };
+
+    await saveImageFilename (req, res, next);
 
     console.log(`req.file: ${JSON.stringify(req.file)}`);
     console.log(`req.body: ${JSON.stringify(req.body)}`);
-    // return res.status(200).json({ message: 'File uploaded successfully' });
-    res.redirect('/personal-cookbook');
+
+    return res.status(200).json({ message: 'File uploaded successfully' });
   })
 };
-
 
 module.exports = {
   getFolderIdFromRecipeId,
@@ -369,5 +420,6 @@ module.exports = {
   deleteAllRecipe,
   deleteRecipe,
   searchRecipe,
+  getRandomPublicRecipe,
   uploadImage
 }

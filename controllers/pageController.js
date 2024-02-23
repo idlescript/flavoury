@@ -105,7 +105,7 @@ const loadPersonalCookbook = async (req, res, next) => {
       res.redirect('/login');
     }
     const recipeData = await recipeController.getAllRecipe(req, res, next);
-    res.render('personalCookbook', { recipeData: recipeData });
+    res.render('personalCookbook', { recipeData: recipeData, userId: req.session.userId });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -163,16 +163,18 @@ const loadEditRecipe = async (req, res, next) => {
     let recipeData;
     if (recipeId) {
       recipeData = await recipeController.getRecipeByRecipeId(recipeId, req, res);
+    } else {
+      await recipeController.saveRecipe(req, res, next);
+      return;
     }
 
     // Redirect to homepage if no recipeData and no recipeId provided
     if (recipeId && recipeData=='') {
-      console.log('redirect to / , recipedata: '+recipeData);
       res.redirect('/');
       return;
     }
 
-    console.log('recipeData inside loadeditrecipe:'+JSON.stringify(recipeData));
+    req.session.recipeId = recipeId;
 
     res.render('editRecipe', { recipeData: recipeData, recipeId: recipeId});
   }
@@ -194,6 +196,34 @@ const loadSettings = async (req, res, next) => {
   }
 };
 
+const loadSearchRecipe = async (req, res, next) => {
+  try {
+    const searchQuery = (req.query.search) ? req.query.search : '';
+    const searchMode = (req.query.mode) ? req.query.mode : '';
+
+    // return if no query or search mode provided
+    if (!searchQuery || !searchMode) {
+      const randomPublicRecipe = await recipeController.getRandomPublicRecipe(req, res, next);
+      res.render('search', { searchResult: randomPublicRecipe });
+      return;
+    }
+
+    // return if query is empty string
+    if (!searchQuery.trim()) {
+      res.render('search', { searchResult: '' });
+      return;
+    }
+
+    req.body = { ...req.body, searchQuery: searchQuery, searchMode: searchMode };
+    let searchResult = [];
+    searchResult= await recipeController.searchRecipe(req, res, next);
+
+    res.render('search', { searchQuery: searchQuery, searchMode: searchMode, searchResult: searchResult });
+  }
+  catch (err) {
+    console.error(`error: ${err}`);
+  }
+};
 
 
 module.exports = {
@@ -208,5 +238,6 @@ module.exports = {
   loadPublicCookbook,
   loadPublicRecipe,
   loadEditRecipe,
-  loadSettings
+  loadSettings,
+  loadSearchRecipe
 }
