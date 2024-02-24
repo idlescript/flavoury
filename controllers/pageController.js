@@ -46,7 +46,6 @@ const deleteAllData = async (req, res, next) => {  // Testing usage only
 
 const loadTestPage = async (req, res, next) => {
   try {
-    console.log("loadTestPage : ");
     const userData = await userController.getAllUser(req, res, next);
     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
     const recipeData = await recipeController.getAllRecipe(req, res, next);
@@ -105,6 +104,7 @@ const loadPersonalCookbook = async (req, res, next) => {
       res.redirect('/login');
     }
     const recipeData = await recipeController.getAllRecipe(req, res, next);
+
     res.render('personalCookbook', { recipeData: recipeData, userId: req.session.userId });
   }
   catch (err) {
@@ -114,11 +114,27 @@ const loadPersonalCookbook = async (req, res, next) => {
 
 const loadPersonalRecipe = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
+    if (!req.session.userId) {
+      res.redirect('/login');
+    }
 
-    res.render('personalRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    const recipeId = req.params.recipeId;
+
+    // If no recipeId provided as param, load all recipe (testing)
+    if (!recipeId) {
+      const recipeData = await recipeController.getAllRecipe(req, res, next);
+      res.render('personalRecipe', { recipeData: recipeData, allRecipe: recipeData, userId: req.session.userId });
+      return;
+    }
+    
+    const recipeData = await recipeController.getPersonalRecipeByRecipeId(recipeId, req, res);
+    if (recipeData != ''){
+      const allRecipe = await recipeController.getAllRecipe(req, res, next);
+      res.render('personalRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId});
+    }
+    else {
+      res.redirect('/');
+    }
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -127,11 +143,9 @@ const loadPersonalRecipe = async (req, res, next) => {
 
 const loadPublicCookbook = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
     const recipeData = await recipeController.getAllRecipe(req, res, next);
 
-    res.render('publicCookbook', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    res.render('publicCookbook', { recipeData: recipeData });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -140,11 +154,33 @@ const loadPublicCookbook = async (req, res, next) => {
 
 const loadPublicRecipe = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
+    const recipeId = req.params.recipeId;
 
-    res.render('publicRecipe', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    // If no recipeId provided as param, load all recipe (testing)
+    if (!recipeId) {
+      const recipeData = await recipeController.getAllRecipe(req, res, next);
+      res.render('publicRecipe', { recipeData: recipeData });
+      return;
+    }
+    
+    const recipeData = await recipeController.getPublicRecipeByRecipeId(recipeId, req, res);
+    if (recipeData != ''){
+
+      let allRecipe;
+
+      if (req.session.userId) {
+        allRecipe = await recipeController.getAllRecipe(req, res, next);
+      }
+      else {
+        allRecipe = '';
+      }
+
+      res.render('publicRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId});
+    }
+    else {
+      res.send(`<p>Recipe not exist</p>
+                <a href="/search-recipe">Go Back</a>`);
+    }
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -162,7 +198,7 @@ const loadEditRecipe = async (req, res, next) => {
     const recipeId = req.params.recipeId;
     let recipeData;
     if (recipeId) {
-      recipeData = await recipeController.getRecipeByRecipeId(recipeId, req, res);
+      recipeData = await recipeController.getPersonalRecipeByRecipeId(recipeId, req, res);
     } else {
       await recipeController.saveRecipe(req, res, next);
       return;
@@ -202,15 +238,9 @@ const loadSearchRecipe = async (req, res, next) => {
     const searchMode = (req.query.mode) ? req.query.mode : '';
 
     // return if no query or search mode provided
-    if (!searchQuery || !searchMode) {
+    if (!searchQuery) {
       const randomPublicRecipe = await recipeController.getRandomPublicRecipe(req, res, next);
       res.render('search', { searchResult: randomPublicRecipe });
-      return;
-    }
-
-    // return if query is empty string
-    if (!searchQuery.trim()) {
-      res.render('search', { searchResult: '' });
       return;
     }
 

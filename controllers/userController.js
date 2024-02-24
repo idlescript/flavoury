@@ -61,9 +61,6 @@ const saveUser = async (req, res, next) => {
 
       const recipeFolderId = await recipeController.createRecipeFolder(req, res, next);
       req.session.folderId = recipeFolderId;
-
-      console.log(`req.session.userId: ${req.session.userId}`)
-      console.log(`recipeFolderId: ${recipeFolderId}`)
       res.redirect('/personal-cookbook');
     }
   }));
@@ -152,26 +149,17 @@ const loginCheck = async (req, res, next) => {
 
   const userId = await getUserIdByEmail(email);
 
-  console.log(`dbPassword: ${dbPassword}`)
-
   bcrypt.compare(password, dbPassword, async (err, result) => {
     if (err) {
         console.error(err);
     } else {
       if (result) {
-        console.log('Password is correct');
-
         req.session.userId = userId;
-
         const recipeFolder = await recipeController.getRecipeFolder(req, res);
 
         req.session.folderId = recipeFolder[0].id;
-
-        console.log(`req.session.folderId:`+req.session.folderId)
-
         res.redirect('/personal-cookbook');
       } else {
-        console.log('Password is incorrect');
         res.send(errorRedirectMsg('Password is wrong'));
       }
     }

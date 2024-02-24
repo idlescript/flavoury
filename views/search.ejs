@@ -48,9 +48,15 @@
         <% } %>
       <% } else { %>
         <% for (let data of searchResult) { %>
-          <a href="/edit-recipe/<%= data.id %>"><%= data.recipe_title %></a>
+          <% if (typeof searchQuery !== 'undefined' && typeof searchMode !== 'undefined') { %>
+            <a href="/<%= (searchMode === 'public')?'public-recipe':'personal-recipe' %>/<%= data.id %>"><%= data.recipe_title %></a>
+          <% } else { %>
+            <a href="/public-recipe/<%= data.id %>"><%= data.recipe_title %></a>
+          <% } %>
+
+          <!-- If photo exist, it will be shown. Feel free to move this around -->
           <% if (data.photo) { %>
-            <img src="/<%= data.photo %>">
+            <img src="/<%= data.photo %>" height="100" width="100">
           <% } %>
           <br><br>
         <% } %>

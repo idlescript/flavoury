@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "build-db": "type db_schema.sql | sqlite3 database.db",
+    "clean-db": "rm database.db",
     "test": "jest --verbose ./tests --testTimeout=5000"
   },
   "dependencies": {

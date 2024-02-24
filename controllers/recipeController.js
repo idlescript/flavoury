@@ -160,8 +160,6 @@ const saveRecipe = async (req, res, next) => {
   let ingredient = [];
   let instruction = [];
 
-  console.log('save recipe, share_to_public:'+share_to_public);
-
   // remove empty string in the array, if array is not empty 
   if (unsorted_ingredient) {
     unsorted_ingredient.forEach((item) => {
@@ -217,19 +215,31 @@ const getAllRecipe = async(req, res, next) => {
   }));
 }
 
-const getRecipeByRecipeId = async(recipeId, req, res) => {
+const getPersonalRecipeByRecipeId = async(recipeId, req, res) => {
   // If user session not exist, redirect to login page
-
-  console.log('getRecipeByRecipeId, req.session.userid: '+req.session.userId);
-
   if (!req.session.userId) {
     res.redirect('/login');
     return;
   }
 
-
   const update_values = [req.session.userId, recipeId];
   const dbQuery = "SELECT * FROM recipe WHERE app_user_id=? AND id=?;"
+  return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
+    if (err) {
+      reject(`Error getting data: ${err}`);
+    } else {
+      result.forEach(arr => {
+        arr.ingredient = JSON.parse(arr.ingredient);
+        arr.instruction = JSON.parse(arr.instruction);
+      })
+      resolve(result);
+    }
+  }));
+}
+
+const getPublicRecipeByRecipeId = async(recipeId, req, res) => {
+  const update_values = [recipeId];
+  const dbQuery = "SELECT * FROM recipe WHERE id=? AND share_to_public = '1';"
   return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
     if (err) {
       reject(`Error getting data: ${err}`);
@@ -257,8 +267,6 @@ const editRecipe = async(req, res, next) => {
 
   let ingredient = [];
   let instruction = [];
-
-  console.log('edit recipe, share_to_public:'+share_to_public);
 
   // remove empty string in the array
   if (unsorted_ingredient) {
@@ -330,14 +338,9 @@ const searchRecipe = async (req, res, next) => {
     }
   }
 
-  console.log('searchRecipe, searchMode: '+searchMode);
-  console.log('searchRecipe, searchQuery: '+searchQuery);
-
   const userId = req.session.userId;
   let update_values;
   let dbQuery;
-
-  console.log('searchRecipe, typeof userId: '+typeof userId);
 
   if (searchMode==="public") {
     // search public recipe
@@ -346,14 +349,13 @@ const searchRecipe = async (req, res, next) => {
   } else {
     // search personal recipe
     update_values = [searchQuery, userId];
-    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND share_to_public IS NULL AND app_user_id=?";
+    dbQuery = "SELECT * FROM recipe WHERE recipe_title LIKE ? AND app_user_id=?";
   }
 
   return new Promise ((resolve, reject) => global.db.all(dbQuery, update_values, function (err, result) {
     if (err) {
       reject(`Error querying data: ${err}`);
     } else {
-      console.log('search result: '+JSON.stringify(result));
       resolve(result);
     }
   }));
@@ -367,7 +369,6 @@ const getRandomPublicRecipe = async (req, res, next) => {
     if (err) {
       reject(`Error querying data: ${err}`);
     } else {
-      console.log('getRandomPublicRecipe() result: '+JSON.stringify(result));
       resolve(result);
     }
   }));
@@ -381,8 +382,6 @@ const uploadImage = async (req, res, next) => {
   }
 
   const userId = req.session.userId;
-  console.log('inside uploadImage()');
-  console.log('req.session.userId: '+ userId);
 
   uploadRecipeImage(req, res, async function(err) { 
     if (err instanceof multer.MulterError) {
@@ -396,9 +395,6 @@ const uploadImage = async (req, res, next) => {
     req.body = { ...req.body, imageName: photo };
 
     await saveImageFilename (req, res, next);
-
-    console.log(`req.file: ${JSON.stringify(req.file)}`);
-    console.log(`req.body: ${JSON.stringify(req.body)}`);
 
     return res.status(200).json({ message: 'File uploaded successfully' });
   })
@@ -415,7 +411,8 @@ module.exports = {
   saveOrEditRecipe,
   saveRecipe,
   getAllRecipe,
-  getRecipeByRecipeId,
+  getPersonalRecipeByRecipeId,
+  getPublicRecipeByRecipeId,
   editRecipe,
   deleteAllRecipe,
   deleteRecipe,

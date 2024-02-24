@@ -30,7 +30,7 @@
     <% } %>
 
     <% for (let data of recipeData) { %>
-      <a href="/edit-recipe/<%= data.id %>"><%= data.recipe_title %></a>
+      <a href="/personal-recipe/<%= data.id %>"><%= data.recipe_title %></a>
       <br><br>
       Recipe image : <img src="<%= data.photo %>" width="120" height="120">
       <br><br>

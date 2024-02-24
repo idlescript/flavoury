@@ -32,18 +32,17 @@
           <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Recipe">
           <p>New Recipe</p>
         </a>
-          <!--
-              Get rid of comments & placeholders
-                once css layout stuff is done
 
-            <% if (Array.isArray(recipeFolder)) { %>
-              <% for (let data of recipeFolder) { %>
-                <p><%= data.folder_name %></p>
-              <% } %>
-            <% } else { %>
-              <p><%= recipeFolder.folder_name %></p>
-            <% } %>
-           -->
+        <!-- Only show personal recipe at the sidebar if user is logged in -->
+        <% if (allRecipe) { %>
+          <ul>
+          <% for (let recipe of allRecipe) { %>
+            <li>
+                <a href="/personal-recipe/<%= recipe.id %>"><%= recipe.recipe_title %></a>
+            </li>
+          <% } %>
+          </ul>
+        <% } %>
 
         <p>List of recipes & groups (for desktop version)</p>
         <button onclick="changeColourScheme()">Change Colour Scheme</button>
@@ -74,31 +73,17 @@
         </div>
       </div>
       <div class="overhead">
-        <h2>Recipe Name</h2>
+        <h2><%= recipeData[0].recipe_title %></h2>
         <div id="desktopHidden">
           <a href="#">
             <img src="/images/icons/settings-black.png" style="width: 40px;" alt="Settings">
           </a>
         </div>
-        <!--
-          <% if (Array.isArray(recipeData)) { %>
-            <% for (let data of recipeData) { %>
-              <p>Prep Time: <%= data.prep_time %></p>
-              <p>Cook Time: <%= data.cook_time %></p>
-              <p>Servings: <%= data.servings_amount %></p>
-        
-            <% } %>
-          <% } else { %>
-            <p>Servings: <%= recipeData.servings_amount %></p>
-            <p>Prep Time: <%= recipeData.prep_time %></p>
-            <p>Cook Time: <%= recipeData.cook_time %></p>
-          <% } %>
-        -->
 
-        <p>Prep Time:</p>
-        <p>Cook Time:</p>
-        <p>Total Time:</p>
-        <p>Servings:</p>
+        <p>Prep Time: <%= recipeData[0].prep_time %></p>
+        <p>Cook Time: <%= recipeData[0].cook_time %></p>
+        <p>Total Time: <%= recipeData[0].prep_time + recipeData[0].cook_time %></p>
+        <p>Servings: <%= recipeData[0].servings_amount %></p>
       </div>
       <!-- recipe notes popup -->
       <div id="notesModal" class="modal">
@@ -106,98 +91,37 @@
           <span class="close">&times;</span>
           <h3>Notes</h3>
           <ul>
-            <!--
-              Get rid of comments & placeholders
-                once css layout stuff is done
-
-                <% if (Array.isArray(recipeData)) { %>
-                <% for (let data of recipeData) { %>
-                  <li><%= data.recipe_note %></li>
-                  <% } %>
-                <% } else { %>
-                  <%= recipeData.recipe_note %>
-                <% } %>
-             -->
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            <li>Some notes</li>
-            <li>Some notes</li>
+            <li><%= recipeData[0].recipe_note %></li>
           </ul>
         </div>
       </div>
       <div class="recipe">
         <div id="leftcolumn" class="card">
           <h3>Ingredients</h3>
-          <!-- Get rid of comments & placeholders
-                once css layout stuff is done-->
-          <!--
-            <ul>
-              <% recipeData.forEach(recipeItem => { %>
-                <% recipeItem.ingredient.forEach(data => { %>
-                  <li>
-                    <label class="container">
-                      <input type="checkbox">
-                      <span class="checkmark">
-                        <%= data.ingredient_name %>
-                      </span>
-                    </label>
-                  </li>
-                <% }); %>
-              <% }); %>
-            </ul>
-          -->
+
           <ul>
-            <li>
-              <label class="container">
-                <input type="checkbox">
-                <span class="checkmark">Ingredient</span>
-              </label>
-            </li>
-            <li>
-              <label class="container">
-                <input type="checkbox">
-                <span class="checkmark">Ingredient</span>
-              </label>
-            </li>
-            <li>
-              <label class="container">
-                <input type="checkbox">
-                <span class="checkmark">Ingredient</span>
-              </label>
-            </li>
-            <li>
-              <label class="container">
-                <input type="checkbox">
-                <span class="checkmark">Ingredient</span>
-              </label>
-            </li>
-            <li>
-              <label class="container">
-                <input type="checkbox">
-                <span class="checkmark">Ingredient</span>
-              </label>
-            </li>
+            <% if (recipeData) { %>
+              <% for (let ingredient of recipeData[0].ingredient) { %>
+                <li>
+                  <label class="container">
+                    <input type="checkbox">
+                    <span class="checkmark"><%= ingredient %></span>
+                  </label>
+                </li>
+              <% } %>
+            <% } %>
           </ul>    
         </div>
         <div id="rightcolumn" class="card">
           <h3>Instructions:</h3>
-          <!-- Get rid of comments & placeholders
-                once css layout stuff is done-->
-          <!--
-            <ol>
-              <% recipeData.forEach(recipeItem => { %>
-                <% recipeItem.instruction.forEach(data => { %>
-                  <li><%= data.instruction_text %></li>
-                <% }); %>
-              <% }); %>
-            </ol>
-          -->
           <ol>
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <% if (recipeData) { %>
+              <% for (let instruction of recipeData[0].instruction) { %>
+                <li>
+                  <%= instruction %>
+                </li>
+              <% } %>
+            <% } %>
           </ol>
         </div>
       </div>
