@@ -209,10 +209,12 @@ const loadEditRecipe = async (req, res, next) => {
       res.redirect('/');
       return;
     }
+    
+    const allRecipe = await recipeController.getAllRecipe(req, res, next);
 
     req.session.recipeId = recipeId;
 
-    res.render('editRecipe', { recipeData: recipeData, recipeId: recipeId});
+    res.render('editRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId});
   }
   catch (err) {
     console.error(`error: ${err}`);

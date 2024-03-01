@@ -2,6 +2,7 @@
 
 body {
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ------- navbar -------- */
@@ -18,17 +19,12 @@ body {
     position: relative;
 }
 
-.searchbar {
-    display: flex;
-    align-items: center;
-}
-
 .navbar a {
     display: flex;
     align-items: center;
 }
 
-a {
+.navbar a {
     text-decoration: none;
     color: #b0dee4;
 }
@@ -37,12 +33,11 @@ a {
     padding-right: 6px;
 }
 
-.settings {
-    position: absolute;
-    bottom: 0;
+.navbar ul li {
+    padding: 5px;
 }
 
-button {
+.navbar button {
     background-color: #4274b9;
     color: #b0dee4;
     border: none;

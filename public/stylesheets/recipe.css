@@ -5,6 +5,11 @@
     color: #b0dee4;
 }
 
+.optionsMenu a {
+    text-decoration: none;
+    color: #b0dee4;
+}
+
 /* ------ options menu ------- */
 .optionsMenu {
     float: right;
@@ -25,6 +30,13 @@
     padding-right: 2%;
     float: left;
     text-align: center;
+}
+
+button {
+    background-color: #4274b9;
+    color: #b0dee4;
+    border: none;
+    cursor: pointer;
 }
 
 /* ------ overhead -----  */
@@ -77,7 +89,8 @@ ol li {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 5%; /* Location of the box */
+    padding-left: 5%;
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -162,10 +175,3 @@ ol li {
 
 
 }
-
-
-
-
-
-
-

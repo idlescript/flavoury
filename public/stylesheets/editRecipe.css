@@ -1,0 +1,91 @@
+/* --------- main content colors --------- */
+
+.optionsMenu {
+    background-color: #4274b9;
+    color: #b0dee4;
+}
+
+.optionsMenu a {
+    text-decoration: none;
+    color: #b0dee4;
+}
+
+/* ------ options menu ------- */
+.optionsMenu {
+    float: right;
+    min-width: 200px;
+    padding: 1%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.optionsMenu p {
+    display:inline-block;
+}
+
+.buttons {
+    width: 44px;
+    padding-top: 3%;
+    padding-left: 2%;
+    padding-right: 2%;
+    float: left;
+    text-align: center;
+}
+
+/* --- form decorations -- */
+
+.form-container {
+margin: 0 auto;
+width: 100%;
+min-width: 320px;
+max-width: 800px;
+padding: 12px;
+background-color: white;
+}
+
+.group-title {
+margin: 14px 0;
+}
+
+label, input[type="text"] {
+display: block;
+margin: 10px 0;
+box-sizing: border-box;
+width: 80%;
+}
+
+.share-to-public p, .share-to-public input, .item-list input, .item-list a {
+display: inline-block;
+}
+
+/* text box removal X */
+.item-list a {
+font-size: 18px;
+font-weight: bold;
+text-decoration: none;
+color: black;
+}
+
+
+hr {
+margin: 25px 0;
+}
+
+textarea {
+width: 80%;
+resize: none;
+margin: 10px 0;
+}
+
+
+/* add text box buttons */
+
+.a-container a {
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+.a-container a img {
+    padding-right: 6px;
+}
