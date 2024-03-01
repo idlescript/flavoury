@@ -7,34 +7,75 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    Personal Cookbook
+    <!-- navbar -->
+    <div class="navbar">
+      <div class="mainNav">
+        <a href="/personal-cookbook">
+          <img src="/images/icons/home-blue.png" style="width: 32px;" alt="Search">
+          <p>Personal Cookbook</p>
+        </a>
+        <a href="/settings">
+          <img src="/images/icons/settings-blue.png" style="width: 32px;" alt="Settings">
+          <p>Settings</p>
+        </a>
+      </div>
+      <div class="secondaryNav">
+        <a href="/edit-recipe">
+          <img src="/images/icons/add-blue.png" style="width: 32px;" alt="Create Recipe">
+          <p>New Recipe</p>
+        </a>
 
-    <br><br>
-    <a href="/edit-recipe">New Recipe</a>
-    <br><br>
-    <a href="/settings">Settings</a>
-    <br><br>
+        <% if (recipeData) { %>
+          <ul>
+          <% for (let recipe of recipeData) { %>
+            <li>
+                <a href="/personal-recipe/<%= recipe.id %>"><%= recipe.recipe_title %></a>
+            </li>
+          <% } %>
+          </ul>
+        <% } %>
+        <button onclick="changeColourScheme()">Change Colour Scheme</button>
+      </div>
+    </div>
+    <!-- main content -->
+    <div class="main">
+      <h2>Personal Cookbook</h2>
 
-    <form action="/search-recipe" method="get">
-      <label for="searchInput">Search:</label>
-      <input type="text" name="search" placeholder="Search recipe ...">
-      <input type="radio" name="mode" value="personal">Personal
-      <input type="radio" name="mode" value="public">Public
-      <button type="submit">Search</button>
-    </form>
+      <br><hr><br>
 
-    <br><br><hr><br><br>
+      <form action="/search-recipe" method="get">
+        <label for="searchInput">Search:</label>
+        <input type="text" name="search" placeholder="Search recipe ...">
+        <input type="radio" name="mode" value="personal">Personal
+        <input type="radio" name="mode" value="public">Public
+        <button type="submit">Search</button>
+      </form>
 
-    <% if (!recipeData || recipeData.length < 1) { %>
-      You have no recipe.
-    <% } %>
+      <br><hr><br>
 
-    <% for (let data of recipeData) { %>
-      <a href="/personal-recipe/<%= data.id %>"><%= data.recipe_title %></a>
-      <br><br>
-      Recipe image : <img src="<%= data.photo %>" width="120" height="120">
-      <br><br>
-    <% } %>
-
+      <h3>All Recipes</h3>
+      <div class="cardsContainer">
+        <div id=recipeCard class="card">
+          <% if (!recipeData || recipeData.length < 1) { %>
+            You have no recipes yet!
+          <% } %>
+          <% for (let data of recipeData) { %>
+            <a href="/personal-recipe/<%= data.id %>">
+              <div class="cardTitle">
+                <%= data.recipe_title %>
+              </div>
+                <% if (data.photo) { %>
+                  <img src="<%= data.photo %>" width="120" height="120">
+                <% } %>
+                <% if(!data.photo) { %>
+                  <img src="/images/default-image.png" width="120" height="120">
+                <% } %>
+            </a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <!-- Loading js at the end to improve display speed-->
+    <script type="text/javascript" src="/javascripts/main.js"></script>
   </body>
 </html>
