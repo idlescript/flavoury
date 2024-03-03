@@ -41,7 +41,7 @@
     <div class="main">
       <h2>Personal Cookbook</h2>
 
-      <br><hr><br>
+      <hr><br>
 
       <form action="/search-recipe" method="get">
         <label for="searchInput">Search:</label>
@@ -55,24 +55,24 @@
 
       <h3>All Recipes</h3>
       <div class="cardsContainer">
-        <div id=recipeCard class="card">
-          <% if (!recipeData || recipeData.length < 1) { %>
-            You have no recipes yet!
-          <% } %>
-          <% for (let data of recipeData) { %>
+        <% if (!recipeData || recipeData.length < 1) { %>
+          You have no recipes yet!
+        <% } %>
+        <% for (let data of recipeData) { %>
+          <div id=recipeCard class="card">
             <a href="/personal-recipe/<%= data.id %>">
-              <div class="cardTitle">
-                <%= data.recipe_title %>
-              </div>
                 <% if (data.photo) { %>
                   <img src="<%= data.photo %>" width="120" height="120">
                 <% } %>
                 <% if(!data.photo) { %>
                   <img src="/images/default-image.png" width="120" height="120">
                 <% } %>
+                <div class="cardTitle">
+                  <%= data.recipe_title %>
+                </div>
             </a>
-          <% } %>
-        </div>
+          </div>
+        <% } %>
       </div>
     </div>
     <!-- Loading js at the end to improve display speed-->

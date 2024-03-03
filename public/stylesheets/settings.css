@@ -27,3 +27,12 @@ body {
   .logout-btn {
     padding: 5px;
   }
+
+  .back-btn {
+    margin: 16px;
+    text-align: center;
+  }
+
+  .back-btn a {
+    color: black;
+  }
