@@ -1,0 +1,68 @@
+/* main layout  and styling */
+
+body {
+    background-color: #4274b9;
+  }
+
+.card {
+    background-color: #f5f3f4;
+    color: #070707;
+}
+
+.container {
+    margin: 0 auto;
+    width: 92%;
+    min-width: 320px;
+    max-width: 500px;
+    margin-top: 9vh;
+    padding: 12px;
+    background-color: white;
+    border-radius: 8%;
+
+    text-align: center;
+}
+.content{
+    margin-top: 35px;
+}
+
+.logout-btn{
+    padding: 5px;
+}
+
+.back-btn {
+    margin-top: 20px;
+}
+
+a {
+    color: black;
+}
+
+
+/* recipe cards */
+
+.card {
+    display: inline-block;
+    width: 140px;
+    height: 180px;
+    text-align: center;
+    vertical-align: middle;
+    
+    padding: 10px;
+    border-radius: 6%;
+}
+
+.defaultImg {
+    padding: 8px;
+
+    border: solid;
+    border-radius: 8%;
+}
+
+.customImg img {
+    border: solid;
+    border-radius: 8%;
+}
+
+.card a {
+    color: black;
+}

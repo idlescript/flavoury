@@ -62,10 +62,14 @@
           <div id=recipeCard class="card">
             <a href="/personal-recipe/<%= data.id %>">
                 <% if (data.photo) { %>
-                  <img src="<%= data.photo %>" width="120" height="120">
+                  <div class="customImg">
+                    <img src="<%= data.photo %>" width="134" height="140">
+                  </div>
                 <% } %>
                 <% if(!data.photo) { %>
-                  <img src="/images/default-image.png" width="120" height="120">
+                  <div class="defaultImg">
+                    <img src="/images/default-image.png" width="120" height="120">
+                  </div>
                 <% } %>
                 <div class="cardTitle">
                   <%= data.recipe_title %>

@@ -10,8 +10,15 @@
     border-radius: 6%;
 }
 
-.card img {
-    padding: 4%;
+.defaultImg {
+    padding: 8px;
+
+    border: solid;
+    border-radius: 8%;
+}
+
+.customImg img {
+    border: solid;
     border-radius: 8%;
 }
 
