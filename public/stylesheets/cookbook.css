@@ -25,3 +25,12 @@
 .card a {
     color: black;
 }
+
+
+#newRecipeCard {
+    background-color: #4274b9;
+}
+
+#newRecipeCard a {
+    color: #b0dee4;
+}

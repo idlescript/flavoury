@@ -17,6 +17,7 @@
     padding: 1%;
     display: flex;
     justify-content: space-evenly;
+    border-radius: 6%;
 }
 
 .optionsMenu p {

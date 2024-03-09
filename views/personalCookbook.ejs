@@ -36,6 +36,9 @@
         <% } %>
         <button onclick="changeColourScheme()">Change Colour Scheme</button>
       </div>
+      <div class="navBottom">
+        <p>© 2024 Flavoury. All Rights Reserved.</p>
+      </div>
     </div>
     <!-- main content -->
     <div class="main">
@@ -55,6 +58,14 @@
 
       <h3>All Recipes</h3>
       <div class="cardsContainer">
+        <div id="newRecipeCard" class="card">
+          <a href="/edit-recipe">
+            <div class="defaultImg">
+              <img src="/images/icons/add-blue.png" style="width: 120px; height: 120;" alt="Create New Recipe">
+            </div>
+            <p>Create New Recipe</p>
+          </a>
+        </div>
         <% if (!recipeData || recipeData.length < 1) { %>
           You have no recipes yet!
         <% } %>

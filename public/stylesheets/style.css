@@ -45,6 +45,11 @@ body {
     cursor: pointer;
 }
 
+.navBottom {
+    position: absolute;
+    bottom: 0;
+}
+
 /* -------- main content --------- */
 
 .main {
@@ -56,14 +61,6 @@ body {
 h3 {
     border-bottom-style: solid;
     border-width: thin;
-}
-
-/* -------- footer --------- */
-
-.footer {
-    background-color: #4274b9;
-    color: #b0dee4;
-    clear: both;
 }
 
 /* ------- screen size responsiveness - desktop ------- */
