@@ -1,16 +1,55 @@
+
+let maxScreenMode = 2;
+
 //------------ Light/Dark colour scheme changer (all pages) -----------
 
-function changeColourScheme() {
-    const body = document.body;
-    const leftcolumn = document.getElementById("leftcolumn");
-    const rightcolumn = document.getElementById("rightcolumn");
-    const notesContent = document.getElementById("foo");
-    body.classList.toggle("body-dark");
-    leftcolumn.classList.toggle("card-dark");
-    rightcolumn.classList.toggle("card-dark");
-    notesContent.classList.toggle("notesContent-dark");
+// -- Old color changing code --
+// const body = document.body;
+// const leftcolumn = document.getElementById("leftcolumn");
+// const rightcolumn = document.getElementById("rightcolumn");
+// const notesContent = document.getElementById("foo");
+// body.classList.toggle("body-dark");
+// leftcolumn.classList.toggle("card-dark");
+// rightcolumn.classList.toggle("card-dark");
+// notesContent.classList.toggle("notesContent-dark");
+// -- End of old color changing code --
 
+function changeColourScheme(scheme=0) {
+  const body = document.body;
+  const leftcolumn = document.getElementById("leftcolumn");
+  const rightcolumn = document.getElementById("rightcolumn");
+  const notesContent = document.getElementById("foo");
+
+  if (scheme==0) {
+    body.style.backgroundColor = "#ffffff";
+    body.style.color = "#070707";
+    leftcolumn.style.backgroundColor = "#f5f3f4";
+    leftcolumn.style.color = "#070707";
+    rightcolumn.style.backgroundColor = "#f5f3f4";
+    rightcolumn.style.color = "#070707";
+    notesContent.style.backgroundColor = "#f5f3f4";
+    notesContent.style.color = "#070707";
+  } else if (scheme==1) {
+    body.style.backgroundColor = "#060709";
+    body.style.color = "#ffffff";
+    leftcolumn.style.backgroundColor = "#101a23";
+    leftcolumn.style.color = "#ffffff";
+    rightcolumn.style.backgroundColor = "#101a23";
+    rightcolumn.style.color = "#ffffff";
+    notesContent.style.backgroundColor = "#101a23";
+    notesContent.style.color = "#ffffff";
+  } else {
+    // if the scheme value is something else, just in case bad thing happen
+    body.style.backgroundColor = "#ffffff";
+    body.style.color = "#070707";
+    leftcolumn.style.backgroundColor = "#f5f3f4";
+    leftcolumn.style.color = "#070707";
+    rightcolumn.style.backgroundColor = "#f5f3f4";
+    rightcolumn.style.color = "#070707";
+    notesContent.style.backgroundColor = "#f5f3f4";
+    notesContent.style.color = "#070707";
   }
+}
 
 //---------- Edit/Save Recipe components (for editRecipe page) -----------
   
@@ -43,6 +82,32 @@ function submitRecipeForm() {
   recipeForm.submit();
 }
 
+// Prompt user for delete recipe confirmation
+function promptBeforeDeleteRecipe(recipeId) {
+  console.log( 'recipeid : '+recipeId);
+  const promptDelete = window.confirm("Are you sure you want to delete the recipe?");
+  if (promptDelete) {
+    deleteRecipe(recipeId);
+  }
+}
+
+// To delete recipe
+async function deleteRecipe(recipeId) {
+	try {
+		const requestData = {"recipeId": recipeId};
+		await fetch('/recipe/delete-recipe', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(requestData)
+		});
+		location.reload();
+	} catch (error) {
+		console.error('Error changing article status:', error);
+	}
+}
+
 // submit image form
 const imageForm = document.getElementById('submit-image-form');
 const recipeImageInput = document.getElementById('recipeImageInput');
@@ -51,7 +116,6 @@ async function submitImageForm() {
       alert('Please select an image.');
   } else {
     const imageFormData = new FormData(imageForm);
-    console.log(imageFormData);
     const response = await fetch('/recipe/upload-image', {
       method: 'POST',
       body: imageFormData
@@ -66,6 +130,39 @@ async function submitImageForm() {
     }
   }
 }
+
+
+// For Changing Screen Mode 
+let changeScreenModeElement;
+document.addEventListener('DOMContentLoaded', function() {
+  changeScreenModeElement = document.getElementById('changeScreenMode');
+  changeColourScheme(changeScreenModeElement.value);
+});
+
+async function changeScreenMode() {
+	try {
+    const newScreenMode = parseInt(changeScreenModeElement.value) + 1;
+    let requestData={};
+
+    if (newScreenMode >= maxScreenMode) {
+      requestData = {screenMode: 0};
+    } else {
+      requestData = {screenMode: newScreenMode};
+    }
+
+		await fetch('/user/save-screen-mode', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(requestData)
+		});
+    location.reload();
+  } catch (error) {
+		console.error('Error saving screen mode to DB:', error);
+	}
+}
+
 
 //----------  Loading notes modal (for personalRecipe page) ----------
 

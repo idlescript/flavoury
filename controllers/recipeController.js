@@ -322,7 +322,7 @@ const deleteRecipe = async (req, res, next) => {
     if (err) {
       reject(`Error deleting data: ${err}`);
     } else {
-      resolve("Data deleted!");
+      res.redirect('/personal-cookbook');
     }
   }));
 }

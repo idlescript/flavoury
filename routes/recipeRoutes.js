@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const recipeController = require('../controllers/recipeController')
-const { uploadRecipeImage } = require('../app');
-const multer  = require('multer');
+// const { uploadRecipeImage } = require('../app');
+// const multer  = require('multer');
 
 router.post('/save-edit-recipe', recipeController.saveOrEditRecipe);
 router.post('/save-recipe', recipeController.saveRecipe);
@@ -16,10 +16,6 @@ router.post('/delete-recipe-folder', recipeController.deleteRecipeFolder);
 router.post('/get-recipe-folder', recipeController.getRecipeFolder);
 
 router.post('/search-recipe', recipeController.searchRecipe);
-
 router.post('/upload-image', recipeController.uploadImage);
-
-
-
 
 module.exports = router;

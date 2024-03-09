@@ -43,20 +43,18 @@ const deleteAllData = async (req, res, next) => {  // Testing usage only
   }
 };
 
+// const loadTestPage = async (req, res, next) => {
+//   try {
+//     const userData = await userController.getAllUser(req, res, next);
+//     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
+//     const recipeData = await recipeController.getAllRecipe(req, res, next);
 
-const loadTestPage = async (req, res, next) => {
-  try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
-
-    res.render('test-page', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData});
-  }
-  catch (err) {
-    console.error(`error: ${err}`);
-  }
-};
-
+//     res.render('test-page', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData});
+//   }
+//   catch (err) {
+//     console.error(`error: ${err}`);
+//   }
+// };
 
 const loadHomepage = async (req, res, next) => {
   try {
@@ -74,11 +72,7 @@ const loadHomepage = async (req, res, next) => {
 
 const loadLogin = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
-
-    res.render('login', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    res.render('login', {});
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -87,11 +81,7 @@ const loadLogin = async (req, res, next) => {
 
 const loadSignup = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
-
-    res.render('signup', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    res.render('signup', {});
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -104,8 +94,9 @@ const loadPersonalCookbook = async (req, res, next) => {
       res.redirect('/login');
     }
     const recipeData = await recipeController.getAllRecipe(req, res, next);
+    const screenMode = await userController.loadScreenMode(req, res, next);
 
-    res.render('personalCookbook', { recipeData: recipeData, userId: req.session.userId });
+    res.render('personalCookbook', { recipeData: recipeData, userId: req.session.userId, screenMode: screenMode.dark_mode });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -120,17 +111,18 @@ const loadPersonalRecipe = async (req, res, next) => {
 
     const recipeId = req.params.recipeId;
 
-    // If no recipeId provided as param, load all recipe (testing)
-    if (!recipeId) {
-      const recipeData = await recipeController.getAllRecipe(req, res, next);
-      res.render('personalRecipe', { recipeData: recipeData, allRecipe: recipeData, userId: req.session.userId });
-      return;
-    }
+    // // If no recipeId provided as param, load all recipe (testing)
+    // if (!recipeId) {
+    //   const recipeData = await recipeController.getAllRecipe(req, res, next);
+    //   res.render('personalRecipe', { recipeData: recipeData, allRecipe: recipeData, userId: req.session.userId });
+    //   return;
+    // }
     
     const recipeData = await recipeController.getPersonalRecipeByRecipeId(recipeId, req, res);
     if (recipeData != ''){
       const allRecipe = await recipeController.getAllRecipe(req, res, next);
-      res.render('personalRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId});
+      const screenMode = await userController.loadScreenMode(req, res, next);
+      res.render('personalRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId, screenMode: screenMode.dark_mode });
     }
     else {
       res.redirect('/');
@@ -144,7 +136,6 @@ const loadPersonalRecipe = async (req, res, next) => {
 const loadPublicCookbook = async (req, res, next) => {
   try {
     const recipeData = await recipeController.getAllRecipe(req, res, next);
-
     res.render('publicCookbook', { recipeData: recipeData });
   }
   catch (err) {
@@ -156,26 +147,29 @@ const loadPublicRecipe = async (req, res, next) => {
   try {
     const recipeId = req.params.recipeId;
 
-    // If no recipeId provided as param, load all recipe (testing)
-    if (!recipeId) {
-      const recipeData = await recipeController.getAllRecipe(req, res, next);
-      res.render('publicRecipe', { recipeData: recipeData });
-      return;
-    }
+    // // If no recipeId provided as param, load all recipe (testing)
+    // if (!recipeId) {
+    //   const recipeData = await recipeController.getAllRecipe(req, res, next);
+    //   res.render('publicRecipe', { recipeData: recipeData });
+    //   return;
+    // }
     
     const recipeData = await recipeController.getPublicRecipeByRecipeId(recipeId, req, res);
     if (recipeData != ''){
 
       let allRecipe;
+      let screenMode;
 
       if (req.session.userId) {
         allRecipe = await recipeController.getAllRecipe(req, res, next);
+        screenMode = await userController.loadScreenMode(req, res, next);
       }
       else {
         allRecipe = '';
+        screenMode = 0;
       }
 
-      res.render('publicRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId});
+      res.render('publicRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId, screenMode: screenMode.dark_mode });
     }
     else {
       res.send(`<p>Recipe not exist</p>
@@ -213,8 +207,8 @@ const loadEditRecipe = async (req, res, next) => {
     const allRecipe = await recipeController.getAllRecipe(req, res, next);
 
     req.session.recipeId = recipeId;
-
-    res.render('editRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId});
+    const screenMode = await userController.loadScreenMode(req, res, next);
+    res.render('editRecipe', { recipeData: recipeData, allRecipe: allRecipe, recipeId: recipeId, screenMode: screenMode.dark_mode });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -223,11 +217,14 @@ const loadEditRecipe = async (req, res, next) => {
 
 const loadSettings = async (req, res, next) => {
   try {
-    const userData = await userController.getAllUser(req, res, next);
-    const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-    const recipeData = await recipeController.getAllRecipe(req, res, next);
+    // If user session not exist, redirect to login page
+    if (!req.session.userId) {
+      res.redirect('/login');
+      return;
+    }
 
-    res.render('settings', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData });
+    const screenMode = await userController.loadScreenMode(req, res, next);
+    res.render('settings', { screenMode: screenMode.dark_mode });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -241,8 +238,13 @@ const loadSearchRecipe = async (req, res, next) => {
 
     // return if no query or search mode provided
     if (!searchQuery) {
+      let screenMode=0;
+      if (req.session.userId) {
+        const dbScreenMode = await userController.loadScreenMode(req, res, next);
+        screenMode = dbScreenMode.dark_mode;
+      }
       const randomPublicRecipe = await recipeController.getRandomPublicRecipe(req, res, next);
-      res.render('search', { searchResult: randomPublicRecipe });
+      res.render('search', { searchResult: randomPublicRecipe, screenMode: screenMode });
       return;
     }
 
@@ -250,7 +252,8 @@ const loadSearchRecipe = async (req, res, next) => {
     let searchResult = [];
     searchResult= await recipeController.searchRecipe(req, res, next);
 
-    res.render('search', { searchQuery: searchQuery, searchMode: searchMode, searchResult: searchResult });
+    const screenMode = await userController.loadScreenMode(req, res, next);
+    res.render('search', { searchQuery: searchQuery, searchMode: searchMode, searchResult: searchResult, screenMode: screenMode.dark_mode });
   }
   catch (err) {
     console.error(`error: ${err}`);
@@ -261,7 +264,6 @@ const loadSearchRecipe = async (req, res, next) => {
 module.exports = {
   insertDummyData,
   deleteAllData,
-  loadTestPage,
   loadHomepage,
   loadLogin,
   loadSignup,

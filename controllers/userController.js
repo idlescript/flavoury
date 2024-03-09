@@ -78,7 +78,7 @@ const getAllUser = async(req, res, next) => { //testing usage only
 }
 
 const getUser = async(req, res, next) => {
-  const userId = req.body.userId;
+  const userId = req.session.userId;
   const update_values = [userId];
   const dbQuery = "SELECT * FROM app_user WHERE id = ?;"
   return new Promise ((resolve, reject) => global.db.get(dbQuery, update_values, function (err, result) {
@@ -137,7 +137,6 @@ const deleteUser = async (req, res, next) => {
   }));
 }
 
-
 const loginCheck = async (req, res, next) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
@@ -171,6 +170,42 @@ const logoutUser = async (req, res, next) => {
   res.redirect('/');
 };
 
+const loadScreenMode = async (req, res, next) => {
+  // If user session not exist, redirect to login page
+  if (!req.session.userId) {
+    res.redirect('/login');
+    return;
+  }
+
+  const update_values = [req.session.userId];
+  const dbQuery = "SELECT dark_mode FROM app_user WHERE id = ?;"
+  return new Promise ((resolve, reject) => global.db.get(dbQuery, update_values, function (err, result) {
+    if (err) {
+      reject(`Error getting data: ${err}`);
+    } else {
+      if (!result) {
+        reject(`No user found for ID: ${userId}`);
+      } else {
+        resolve(result);
+      }
+    }
+  }));
+};
+
+const saveScreenMode = async (req, res, next) => {
+  const screen_mode = req.body.screenMode;
+  const userId = req.session.userId
+  const update_values = [screen_mode, userId];
+  const dbQuery = "UPDATE app_user SET dark_mode=? WHERE id=?;"
+  console.log('savescreenmode : '+ screen_mode);
+  return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
+    if (err) {
+      reject(`Error updating data: ${err}`);
+    } else {
+      res.redirect('/settings');
+    }
+  }));
+};
 
 module.exports = {
   saveUser,
@@ -180,5 +215,7 @@ module.exports = {
   deleteAllUser,
   deleteUser,
   loginCheck,
-  logoutUser
+  logoutUser,
+  loadScreenMode,
+  saveScreenMode,
 }

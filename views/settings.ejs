@@ -13,8 +13,13 @@
         <form action="/user/logout" method="POST">
           <button type="submit" class="logout-btn">Logout</button>
         </form>
+        <div class="screen-mode">
+          <a href="#" onclick="changeScreenMode()">Change Screen Mode</a>
+        </div>
       </div>
       <div class="back-btn"><a href="/personal-cookbook">Back To Personal Cookbook</a></div>
     </div>
+    <%- include('changeScreenMode') %>
+    <script type="text/javascript" src="/javascripts/main.js"></script>
   </body>
 </html>

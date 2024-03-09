@@ -64,8 +64,10 @@
           </a>
         </div>
         <div class="buttons">
-          <img src="/images/icons/delete-blue.png" style="width: 40px;" alt="Delete">
-          <p>Delete</p>
+          <a href="#" onclick="promptBeforeDeleteRecipe('<%= recipeData[0].id %>')">
+            <img src="/images/icons/delete-blue.png" style="width: 40px;" alt="Delete">
+            <p>Delete</p>
+          </a>
         </div>
       </div>
       <div class="overhead">
@@ -124,6 +126,7 @@
         </div>
       </div>
     </div>
+    <%- include('changeScreenMode') %>
     <!-- Loading js at the end to improve display speed-->
     <script type="text/javascript" src="/javascripts/main.js"></script>
   </body>
