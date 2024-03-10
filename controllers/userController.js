@@ -1,9 +1,6 @@
 const recipeController = require('./recipeController');
 const bcrypt = require("bcryptjs");
 
-function randomDigit(digit_amount) {  // for testing purpose only
-  return Math.floor(10 ** (digit_amount-1) + Math.random() * (10 ** digit_amount-1));
-}
 
 const errorRedirectMsg = (message) => {
     return `<p>${message}</p>
@@ -197,7 +194,6 @@ const saveScreenMode = async (req, res, next) => {
   const userId = req.session.userId
   const update_values = [screen_mode, userId];
   const dbQuery = "UPDATE app_user SET dark_mode=? WHERE id=?;"
-  console.log('savescreenmode : '+ screen_mode);
   return new Promise ((resolve, reject) => global.db.run(dbQuery, update_values, function (err) {
     if (err) {
       reject(`Error updating data: ${err}`);

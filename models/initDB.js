@@ -53,7 +53,7 @@ async function initializeDatabase() {
       console.error(err);
       process.exit(1); //can't connect to the DB
     }else{
-      console.log("Database connected");
+      // Connected to DB
       global.db.run("PRAGMA foreign_keys=ON"); //foreign key constraints
     }
   });
