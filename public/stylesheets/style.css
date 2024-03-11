@@ -75,7 +75,7 @@ h3 {
 
 /* ------- screen size responsiveness - mobile --------- */
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
 
     #desktopHidden {
         display: contents;

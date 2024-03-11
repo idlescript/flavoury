@@ -3,8 +3,8 @@
   <head>
     <title>Flavoury</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/recipe.css' />
     <link rel='stylesheet' href='/stylesheets/colorChanger.css' />
+    <link rel='stylesheet' href='/stylesheets/recipe.css' />
   </head>
   <body>
     <!-- navbar -->
@@ -34,7 +34,6 @@
           <% } %>
           </ul>
         <% } %>
-        <button onclick="changeColourScheme()">Change Colour Scheme</button>
       </div>
       <div class="navBottom">
         <p>© 2024 Flavoury. All Rights Reserved.</p>
@@ -47,7 +46,7 @@
           <div class="buttons">
             <a href="/personal-cookbook"> 
             <img src="/images/icons/home-blue.png" style="width: 40px;" alt="Home">
-            <p>Home</p>
+            <p>Personal Cookbook</p>
             </a>
           </div>
         </div>  
@@ -73,9 +72,16 @@
       <div class="overhead">
         <h2><%= recipeData[0].recipe_title %></h2>
         <div id="desktopHidden">
-          <a href="#">
-            <img src="/images/icons/settings-black.png" style="width: 40px;" alt="Settings">
-          </a>
+          <div class="mobileSettings">
+            <a href="/settings">
+              <div class="imgblack">
+                <img src="/images/icons/settings-black.png" width="40" height="40" alt="Settings">
+              </div>
+              <div class="imgwhite">
+                <img src="/images/icons/settings-white.png" width="40" height="40" alt="Settings">
+              </div>
+            </a>
+          </div>
         </div>
 
         <p>Prep Time: <%= recipeData[0].prep_time %></p>

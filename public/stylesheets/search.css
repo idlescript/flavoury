@@ -1,8 +1,5 @@
 /* main layout  and styling */
 
-body {
-}
-
 .card {
     background-color: #f5f3f4;
     color: #070707;
@@ -21,7 +18,8 @@ body {
     text-align: center;
 }
 .content{
-    margin-top: 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .logout-btn{

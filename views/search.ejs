@@ -15,7 +15,7 @@
         <form action="/search-recipe" method="get">
           <label for="searchInput">Search:</label>
           <input type="text" name="search" placeholder="Search recipe ..."><br>
-          <input type="radio" name="mode" value="personal">Personal
+          <input type="radio" name="mode" value="personal" checked>Personal
           <input type="radio" name="mode" value="public">Public
           <button type="submit">Search</button>
         </form>
@@ -36,14 +36,19 @@
               <% } %>
               <% if(!data.photo) { %>
                 <div class="defaultImg">
-                  <img src="/images/default-image.png" width="120" height="120">
+                  <div class="imgblack">
+                    <img src="/images/default-image.png" width="120" height="120">
+                  </div>
+                  <div class="imgwhite">
+                    <img src="/images/default-image-white.png" width="120" height="120">
+                  </div>
                 </div>
               <% } %>
               <!-- Recipe title -->
               <% if (typeof searchQuery !== 'undefined' && typeof searchMode !== 'undefined') { %>
-                <a href="/<%= (searchMode === 'public')?'public-recipe':'personal-recipe' %>/<%= data.id %>"><%= data.recipe_title %></a>
+                <a class="cardTitle" href="/<%= (searchMode === 'public')?'public-recipe':'personal-recipe' %>/<%= data.id %>"><%= data.recipe_title %></a>
               <% } else { %>
-                <a href="/public-recipe/<%= data.id %>"><%= data.recipe_title %></a>
+                  <a class="cardTitle" href="/public-recipe/<%= data.id %>"><%= data.recipe_title %></a>
               <% } %>
             </div>
             <br><br>

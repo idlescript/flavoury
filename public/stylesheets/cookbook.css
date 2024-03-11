@@ -26,11 +26,60 @@
     color: black;
 }
 
-
-#newRecipeCard {
+.newRecipeCard {
     background-color: #4274b9;
+    
+    display: inline-block;
+    width: 140px;
+    height: 180px;
+    text-align: center;
+    vertical-align: middle;
+    
+    margin: 14px;
+    padding: 10px;
+    border-radius: 6%;
 }
 
-#newRecipeCard a {
+.newRecipeCard a {
     color: #b0dee4;
 }
+
+/* ------ screen size responsiveness - mobile ---------- */
+
+.mobileSettings {
+    float: right;
+}
+
+@media screen and (max-width: 800px) {
+
+    .optionsMenu {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        padding: 1%;
+        justify-content: space-evenly;
+        border-radius: 6%;
+
+        background-color: #4274b9;
+        color: #b0dee4;
+    }
+
+    .optionsMenu p {
+        display: inline;
+        text-decoration: none;
+        color: #b0dee4;
+    }
+
+    .optionsMenu a {
+        text-decoration: none;
+    }
+
+    .buttons {
+        width: 46px;
+        padding-top: 2%;
+        text-align: center;
+    }
+}
+
+

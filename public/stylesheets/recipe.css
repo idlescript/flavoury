@@ -143,7 +143,11 @@ ol li {
 
 /* ------- screen size responsiveness - mobile --------- */
 
-@media screen and (max-width: 600px) {
+.mobileSettings {
+    float: right;
+}
+
+@media screen and (max-width: 800px) {
 
     .overhead {
         float: none;
