@@ -5,6 +5,15 @@
     <link rel='stylesheet' href='/stylesheets/registration.css' />
   </head>
   <body>
+    <div class="introduction">
+      <h2>Welcome to Flavoury!</h2>
+      <p>
+        Flavoury is the newest up and coming recipe storage site where you 
+        can create and share your own recipes or explore other user's culinary
+        masterpieces!
+      </p>
+      <p>Get started by signing up now!</p>
+    </div>
     <div class="form-container">
       <div class="form-title"><h3>Sign Up</h3></div>
       <form action="/user/save-user" method="post">
@@ -20,7 +29,8 @@
         <input type="submit" value="Sign Up">
       </form>
       <div class="form-footer">
-        <div class="form-footer-content"><a href="/login">Back to Login</a></div>
+        <div class="form-footer-content">
+          Already Have an Account? <a href="/login">Login</a></div>
       </div>
     </div>
   </body>

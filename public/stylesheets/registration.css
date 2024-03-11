@@ -8,7 +8,7 @@ body {
     width: 92%;
     min-width: 320px;
     max-width: 500px;
-    margin-top: 9vh;
+    margin-top: 2vh;
     padding: 12px;
     background-color: white;
     border-radius: 5%;
@@ -28,4 +28,16 @@ body {
 
   a {
     color: black;
+  }
+
+  .introduction {
+    margin: 0 auto;
+    width: 92%;
+    min-width: 320px;
+    max-width: 500px;
+    margin-top: 9vh;
+    padding: 12px;
+    background-color: white;
+    border-radius: 5%;
+    text-align: center;
   }
