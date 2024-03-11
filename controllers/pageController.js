@@ -43,19 +43,6 @@ const deleteAllData = async (req, res, next) => {  // Testing usage only
   }
 };
 
-// const loadTestPage = async (req, res, next) => {
-//   try {
-//     const userData = await userController.getAllUser(req, res, next);
-//     const recipeFolder = await recipeController.getAllRecipeFolder(req, res, next);
-//     const recipeData = await recipeController.getAllRecipe(req, res, next);
-
-//     res.render('test-page', { userData: userData, recipeFolder: recipeFolder, recipeData: recipeData});
-//   }
-//   catch (err) {
-//     console.error(`error: ${err}`);
-//   }
-// };
-
 const loadHomepage = async (req, res, next) => {
   try {
     if (!req.session.userId) {
@@ -92,6 +79,7 @@ const loadPersonalCookbook = async (req, res, next) => {
   try {
     if (!req.session.userId) {
       res.redirect('/login');
+      return;
     }
     const recipeData = await recipeController.getAllRecipe(req, res, next);
     const screenMode = await userController.loadScreenMode(req, res, next);
@@ -110,13 +98,6 @@ const loadPersonalRecipe = async (req, res, next) => {
     }
 
     const recipeId = req.params.recipeId;
-
-    // // If no recipeId provided as param, load all recipe (testing)
-    // if (!recipeId) {
-    //   const recipeData = await recipeController.getAllRecipe(req, res, next);
-    //   res.render('personalRecipe', { recipeData: recipeData, allRecipe: recipeData, userId: req.session.userId });
-    //   return;
-    // }
     
     const recipeData = await recipeController.getPersonalRecipeByRecipeId(recipeId, req, res);
     if (recipeData != ''){
@@ -146,13 +127,6 @@ const loadPublicCookbook = async (req, res, next) => {
 const loadPublicRecipe = async (req, res, next) => {
   try {
     const recipeId = req.params.recipeId;
-
-    // // If no recipeId provided as param, load all recipe (testing)
-    // if (!recipeId) {
-    //   const recipeData = await recipeController.getAllRecipe(req, res, next);
-    //   res.render('publicRecipe', { recipeData: recipeData });
-    //   return;
-    // }
     
     const recipeData = await recipeController.getPublicRecipeByRecipeId(recipeId, req, res);
     if (recipeData != ''){
@@ -259,7 +233,6 @@ const loadSearchRecipe = async (req, res, next) => {
     console.error(`error: ${err}`);
   }
 };
-
 
 module.exports = {
   insertDummyData,

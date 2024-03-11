@@ -175,7 +175,6 @@ function submitRecipeForm() {
 
 // Prompt user for delete recipe confirmation
 function promptBeforeDeleteRecipe(recipeId) {
-  console.log('recipeid : ' + recipeId);
   const promptDelete = window.confirm("Are you sure you want to delete the recipe?");
   if (promptDelete) {
     deleteRecipe(recipeId);

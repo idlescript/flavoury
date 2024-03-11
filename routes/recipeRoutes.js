@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const recipeController = require('../controllers/recipeController')
-// const { uploadRecipeImage } = require('../app');
-// const multer  = require('multer');
 
 router.post('/save-edit-recipe', recipeController.saveOrEditRecipe);
 router.post('/save-recipe', recipeController.saveRecipe);
